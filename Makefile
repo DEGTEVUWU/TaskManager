@@ -22,7 +22,7 @@ lint:
 	./gradlew checkstyleMain checkstyleTest
 
 test:
-	./gradlew test
+	gradle test
 
 reload-classes:
 	./gradlew -t classes
