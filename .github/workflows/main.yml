@@ -12,11 +12,11 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
         with:
-          java-version: '20'
+          java-version: '21'
           distribution: 'temurin'
       - uses: gradle/gradle-build-action@v2
         with:
-          gradle-version: 8.3
+          gradle-version: 8.5
       - run: gradle checkstyleMain
       - run: make test
       - name: Publish code coverage
