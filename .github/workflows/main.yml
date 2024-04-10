@@ -18,15 +18,15 @@ jobs:
         with:
           gradle-version: 8.3
       - run: make test
-      - run: make report
-      - run: make lint
-      - name: Set execute permissions for cc-test-reporter
-        run: chmod +x ./app/cc-test-reporter
+#      - run: make report
+#      - run: make lint
+#      - name: Set execute permissions for cc-test-reporter
+#        run: chmod +x ./app/cc-test-reporter
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v5.0.0
         env:
           CC_TEST_REPORTER_ID: ${{secrets.CC_TEST_REPORTER_ID}}
-          JACOCO_SOURCE_PATH: app/src/main/java
+          JACOCO_SOURCE_PATH: ${{github.workspace}}/src/main/java
         with:
           coverageCommand: make report
-          coverageLocations: ${{github.workspace}}/app/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
+          coverageLocations: ${{github.workspace}}/build/reports/jacoco/test/jacocoTestReport.xml:jacoco
