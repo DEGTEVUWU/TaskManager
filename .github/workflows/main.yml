@@ -20,8 +20,8 @@ jobs:
       - run: make test
       - run: make report
 #      - run: make lint
-#      - name: Set execute permissions for cc-test-reporter
-#        run: chmod +x ./app/cc-test-reporter
+      - name: Set execute permissions for cc-test-reporter
+        run: chmod +x ./app/cc-test-reporter
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v5.0.0
         env:
