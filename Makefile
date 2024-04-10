@@ -19,7 +19,7 @@ start-dist:
 	./build/install/app/bin/app
 
 lint:
-	./gradlew checkstyleMain checkstyleTest
+	gradle checkstyleMain checkstyleTest
 
 test:
 	gradle test
@@ -28,7 +28,7 @@ reload-classes:
 	./gradlew -t classes
 
 report:
-	./gradlew jacocoTestReport
+	gradle jacocoTestReport
 
 check-java-deps:
 	./gradlew dependencyUpdates -Drevision=release
