@@ -31,7 +31,8 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	runtimeOnly("com.h2database:h2")
 
-	compileOnly("org.projectlombok:lombok:1.18.30")
+	compileOnly("org.projectlombok:lombok:1.18.24")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
