@@ -4,6 +4,7 @@ import hexlet.code.app.dto.users.UserCreateDTO;
 import hexlet.code.app.dto.users.UserDTO;
 import hexlet.code.app.dto.users.UserUpdateDTO;
 import hexlet.code.app.model.User;
+import hexlet.code.app.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
