@@ -1,10 +1,15 @@
 package hexlet.code.app.controller;
 
+import hexlet.code.app.dto.users.UserCreateDTO;
+import hexlet.code.app.dto.users.UserDTO;
+import hexlet.code.app.dto.users.UserUpdateDTO;
 import hexlet.code.app.model.User;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -15,10 +20,6 @@ public class UsersController {
     @Autowired
     private UserMapper userMapper;
 
-//    @Autowired
-//    private CategoryRepository categoryRepository;
-
-    // BEGIN
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> index() {
