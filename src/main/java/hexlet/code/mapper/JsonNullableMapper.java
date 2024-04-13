@@ -1,4 +1,4 @@
-package hexlet.code.app.mapper;
+package hexlet.code.mapper;
 
 import org.mapstruct.Condition;
 import org.mapstruct.Mapper;
@@ -26,3 +26,4 @@ public abstract class JsonNullableMapper {
 }
 
 //класс нужен, чтоб при обрабтки ДТО-модель можно было принимать null, как значнеие, и добавлять его в таблы/сущности/дто
+

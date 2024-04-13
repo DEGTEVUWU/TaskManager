@@ -1,4 +1,4 @@
-package hexlet.code.app.dto.users;
+package hexlet.code.dto.users;
 
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
@@ -6,10 +6,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class UserCreateDTO {
-    @NotBlank
+//    @NotBlank
     private String firstName;
 
-    @NotBlank
+//    @NotBlank
     private String lastName;
 
     @Column(unique=true)

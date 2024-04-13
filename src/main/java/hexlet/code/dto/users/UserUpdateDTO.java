@@ -1,4 +1,5 @@
-package hexlet.code.app.dto.users;
+package hexlet.code.dto.users;
+
 
 public class UserUpdateDTO {
     private String firsName;

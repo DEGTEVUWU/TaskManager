@@ -1,12 +1,12 @@
-package hexlet.code.app.controller;
+package hexlet.code.controller;
 
-import hexlet.code.app.ResourceNotFoundException;
-import hexlet.code.app.dto.users.UserCreateDTO;
-import hexlet.code.app.dto.users.UserDTO;
-import hexlet.code.app.dto.users.UserUpdateDTO;
-import hexlet.code.app.mapper.UserMapper;
-import hexlet.code.app.model.User;
-import hexlet.code.app.repository.UserRepository;
+import hexlet.code.dto.users.UserCreateDTO;
+import hexlet.code.dto.users.UserDTO;
+import hexlet.code.dto.users.UserUpdateDTO;
+import hexlet.code.exception.ResourceNotFoundException;
+import hexlet.code.mapper.UserMapper;
+import hexlet.code.model.User;
+import hexlet.code.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,9 +37,9 @@ public class UsersController {
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO create(@Valid @RequestBody UserCreateDTO userData) {
-        var user = userMapper.map(userData);
+        User user = userMapper.map(userData);
         userRepository.save(user);
-        var userDTO = userMapper.map(user);
+        UserDTO userDTO = userMapper.map(user);
         return userDTO;
     }
 

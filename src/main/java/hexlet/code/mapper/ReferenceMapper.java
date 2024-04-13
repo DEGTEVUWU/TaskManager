@@ -1,6 +1,6 @@
-package hexlet.code.app.mapper;
+package hexlet.code.mapper;
 
-import hexlet.code.app.model.BaseEntity;
+import hexlet.code.model.BaseEntity;
 import jakarta.persistence.EntityManager;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
@@ -21,3 +21,4 @@ public abstract class ReferenceMapper {
 //данный класс нужен, чтоб вернуть класс любой модели, налседюущей базовую_сущность, используется
 //в мапперах для каждого отдельного класса, чтоб преобразовывать по айди одни сущности в поля другого класса
 // подобной контсрукцией     @Mapping(target = "category", source = "categoryId")
+
