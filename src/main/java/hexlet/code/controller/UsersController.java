@@ -12,11 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
 public class UsersController {
+    private static final Logger log = LoggerFactory.getLogger(UsersController.class);
     @Autowired
     private UserRepository userRepository;
 
@@ -37,7 +41,9 @@ public class UsersController {
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO create(@Valid @RequestBody UserCreateDTO userData) {
+        log.info("Received DTO: {}", userData);
         User user = userMapper.map(userData);
+        log.info("Mapped User: {}", user);
         userRepository.save(user);
         UserDTO userDTO = userMapper.map(user);
         return userDTO;

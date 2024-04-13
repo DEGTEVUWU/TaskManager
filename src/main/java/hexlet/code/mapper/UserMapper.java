@@ -7,13 +7,16 @@ import hexlet.code.model.User;
 import org.mapstruct.*;
 
 @Mapper(
-        uses = { JsonNullableMapper.class, ReferenceMapper.class },
+        uses = { ReferenceMapper.class, JsonNullableMapper.class },
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         componentModel = MappingConstants.ComponentModel.SPRING,
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public abstract class UserMapper {
-    //    @Mapping(target = "category", source = "categoryId")
+    @Mapping(target="firstName", source="firstName")
+    @Mapping(target="lastName", source="lastName")
+    @Mapping(target="email", source="email")
+    @Mapping(target="password", source="password")
     public abstract User map(UserCreateDTO dto);
 
     //    @Mapping(source = "category.id", target = "categoryId")

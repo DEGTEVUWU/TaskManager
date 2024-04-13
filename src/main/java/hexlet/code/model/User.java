@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
@@ -18,6 +19,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Setter
 @Entity
 @Table(name = "users")
+@EntityListeners(AuditingEntityListener.class)
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -33,13 +35,15 @@ public class User extends BaseEntity {
     @Email
     private String email;
 
-//    @Column(nullable = false)
+    @Column(nullable = false)
     @Size(min = 3)
     private String password;
 
-    @LastModifiedDate
-    private LocalDate updatedAt;
-
+//    @Column(name = "created_at", updatable = false)
     @CreatedDate
     private LocalDate createdAt;
+
+//    @Column(name = "updated_at")
+    @LastModifiedDate
+    private LocalDate updatedAt;
 }
