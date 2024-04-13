@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")

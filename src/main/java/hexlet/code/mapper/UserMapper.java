@@ -13,10 +13,10 @@ import org.mapstruct.*;
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public abstract class UserMapper {
-    @Mapping(target="firstName", source="firstName")
-    @Mapping(target="lastName", source="lastName")
-    @Mapping(target="email", source="email")
-    @Mapping(target="password", source="password")
+//    @Mapping(target="firstName", source="firstName")
+//    @Mapping(target="lastName", source="lastName")
+//    @Mapping(target="email", source="email")
+//    @Mapping(target="password", source="password")
     public abstract User map(UserCreateDTO dto);
 
     //    @Mapping(source = "category.id", target = "categoryId")
