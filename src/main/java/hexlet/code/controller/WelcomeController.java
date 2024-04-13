@@ -8,6 +8,6 @@ public final class WelcomeController {
 
     @GetMapping("/")
     public String root() {
-        return "Welcome to!!! Spring";
+        return "Welcome to Spring!";
     }
 }
