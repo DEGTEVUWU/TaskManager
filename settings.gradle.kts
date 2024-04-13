@@ -5,4 +5,6 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
+//include( "src/main/resources")
 rootProject.name = "app"
+

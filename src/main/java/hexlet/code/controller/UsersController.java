@@ -7,10 +7,10 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
-import hexlet.code.utils.PasswordEncoder;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import org.slf4j.Logger;
@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -31,8 +30,8 @@ public class UsersController {
     @Autowired
     private UserMapper userMapper;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
@@ -49,7 +48,7 @@ public class UsersController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO create(@Valid @RequestBody UserCreateDTO userData) throws NoSuchAlgorithmException, InvalidKeySpecException {
         User user = userMapper.map(userData);
-        user.setPassword(PasswordEncoder.encodePassword(user.getPassword())); //хешировать пароль
+        user.setPassword(passwordEncoder.encode(user.getPassword())); //хешировать пароль
         userRepository.save(user);
         UserDTO userDTO = userMapper.map(user);
         return userDTO;
