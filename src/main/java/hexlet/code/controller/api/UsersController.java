@@ -1,4 +1,4 @@
-package hexlet.code.controller;
+package hexlet.code.controller.api;
 
 import hexlet.code.dto.users.UserCreateDTO;
 import hexlet.code.dto.users.UserDTO;
@@ -7,9 +7,11 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
+import hexlet.code.utils.UserUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,9 +35,20 @@ public class UsersController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private final UserUtils userUtils;
+
+    public UsersController(UserUtils userUtils) {
+        this.userUtils = userUtils;
+    }
+
+
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
     public List<UserDTO> index() {
+        User currentUser = userUtils.getCurrentUser();
+        if (currentUser == null)  throw  new ResourceNotFoundException("UNAUTHORIZED!");
+
         var users = userRepository.findAll();
         var result = users.stream()
                 .map(userMapper::map)
@@ -48,7 +61,7 @@ public class UsersController {
     @ResponseStatus(HttpStatus.CREATED)
     public UserDTO create(@Valid @RequestBody UserCreateDTO userData) throws NoSuchAlgorithmException, InvalidKeySpecException {
         User user = userMapper.map(userData);
-        user.setPassword(passwordEncoder.encode(user.getPassword())); //хешировать пароль
+        user.setPasswordDigest(passwordEncoder.encode(user.getPassword())); //хешировать пароль
         userRepository.save(user);
         UserDTO userDTO = userMapper.map(user);
         return userDTO;

@@ -1,4 +1,4 @@
-package hexlet.code.controller;
+package hexlet.code.controller.api;
 
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
@@ -86,7 +86,7 @@ public class UsersControllerTest {
         data.setFirstName("Ivan");
         data.setLastName("Ivanov");
         data.setEmail("email@email.com");
-        data.setPassword("password");
+        data.setPasswordDigest("password");
         userRepository.save(data);
 
         MockHttpServletRequestBuilder request = post("/api/users/")
@@ -99,7 +99,7 @@ public class UsersControllerTest {
         Optional<User> user = userRepository.findByEmail(data.getEmail());
 
         assertThat(user).isNotNull();
-//        assertThat(user.get().getFirstName()).isEqualTo(data.getFirstName());
+        assertThat(user.get().getFirstName()).isEqualTo(data.getFirstName());
         assertThat(user.get().getLastName()).isEqualTo(data.getLastName());
         assertThat(user.get().getEmail()).isEqualTo(data.getEmail());
         assertThat(user.get().getPassword()).isEqualTo(data.getPassword());
@@ -120,9 +120,9 @@ public class UsersControllerTest {
 
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).and(
-//                v -> v.node("Ivan").isEqualTo(user.getFirstName()),
-                v -> v.node("Ivanov").isEqualTo(user.getLastName()),
-                v -> v.node("email@email.com").isEqualTo(user.getEmail()),
+                v -> v.node("firstName").isEqualTo(user.getFirstName()),
+                v -> v.node("lastName").isEqualTo(user.getLastName()),
+                v -> v.node("email").isEqualTo(user.getEmail()),
                 v -> v.node("password").isEqualTo(user.getPassword())
         );
     }
@@ -145,7 +145,7 @@ public class UsersControllerTest {
                 .andExpect(status().isOk());
 
         user = userRepository.findById(user.getId()).get();
-//        assertThat(user.getFirstName()).isEqualTo(("Ivan2"));
+        assertThat(user.getFirstName()).isEqualTo(("Ivan2"));
         assertThat(user.getLastName()).isEqualTo(("Ivanov2"));
     }
 

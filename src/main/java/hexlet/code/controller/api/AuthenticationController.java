@@ -1,4 +1,4 @@
-package hexlet.code.controller;
+package hexlet.code.controller.api;
 
 
 import hexlet.code.dto.AuthRequest;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+//@Api(tags = "Authentication")
 @RestController
 @RequestMapping("/api")
 public class AuthenticationController {

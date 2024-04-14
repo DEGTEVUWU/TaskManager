@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import jdk.jfr.SettingDefinition;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -37,11 +38,11 @@ public class User implements BaseEntity, UserDetails {
     // EMAIL
     @Column(unique = true)
     @Email
+    @ToString.Include
     private String email;
 
     @Column(nullable = false)
-    @Size(min = 3)
-    private String password;
+    private String passwordDigest;
 
 //    @Column(name = "created_at", updatable = false)
     @CreatedDate
@@ -52,8 +53,8 @@ public class User implements BaseEntity, UserDetails {
     private LocalDate updatedAt;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+    public String getPassword() {
+        return passwordDigest;
     }
 
     @Override
@@ -62,22 +63,27 @@ public class User implements BaseEntity, UserDetails {
     }
 
     @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
