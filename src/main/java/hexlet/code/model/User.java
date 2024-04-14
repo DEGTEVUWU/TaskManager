@@ -44,11 +44,11 @@ public class User implements BaseEntity, UserDetails {
     @Column(nullable = false)
     private String passwordDigest;
 
-//    @Column(name = "created_at", updatable = false)
+    private String role;
+
     @CreatedDate
     private LocalDate createdAt;
 
-//    @Column(name = "updated_at")
     @LastModifiedDate
     private LocalDate updatedAt;
 
