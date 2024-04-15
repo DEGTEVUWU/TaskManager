@@ -1,10 +1,9 @@
 package hexlet.code.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.IdGeneratorType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,24 +15,30 @@ import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
-@Getter
-@Setter
 @Entity
-@Table(name = "task_statuses")
+@Setter
+@Getter
+@Table(name = "tasks")
 @EntityListeners(AuditingEntityListener.class)
-public class TaskStatus implements BaseEntity, UserDetails {
+public class Task implements BaseEntity, UserDetails {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    @Size(min = 1)
     private String name;
 
-    @Column(nullable = false)
-    @Size(min = 1)
-    private String slug;
+    private Long index;
+
+    private String description;
+
+    @NotBlank
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TaskStatus taskStatus;
+
+    @Column(nullable = true)
+    @ManyToOne
+    private User assignee;
 
     @CreatedDate
     private LocalDate createdAt;

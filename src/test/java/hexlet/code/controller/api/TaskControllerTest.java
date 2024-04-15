@@ -2,7 +2,7 @@ package hexlet.code.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.model.TaskStatus;
-import hexlet.code.model.User;
+import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import net.datafaker.Faker;
 import org.instancio.Instancio;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TaskStatusControllerTest {
+public class TaskControllerTest {
     //СЕЙЧАС ПРОБЛЕМА В ТЕСТАХ В ТОМ, ЧТО НЕТ АВТОРИЗАЦИИ, НУЖНО ДОБАВИТЬ И ДЕЛАТЬ ТЕСТЫ(КРУД ЗАПРОСЫ) ЧЕРЕЗ АВТОРИЗОВАНРОГО ЮЗЕРА
     @Autowired
     private MockMvc mockMvc;
@@ -39,11 +39,11 @@ public class TaskStatusControllerTest {
     private ObjectMapper om;
 
     @Autowired
-    private TaskStatusRepository taskStatusRepository;
+    private TaskRepository taskRepository;
 
     @Test
     public void testIndex() throws Exception {
-        var result = mockMvc.perform(get("/api/task_statuses/"))
+        var result = mockMvc.perform(get("/api/tasks/"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -57,7 +57,7 @@ public class TaskStatusControllerTest {
         data.setName("Work");
         taskStatusRepository.save(data);
 
-        MockHttpServletRequestBuilder request = post("/api/task_statuses/")
+        MockHttpServletRequestBuilder request = post("/api/tasks/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
 
@@ -76,7 +76,7 @@ public class TaskStatusControllerTest {
         var task = newTaskStatus();
         taskStatusRepository.save(task);
 
-        MockHttpServletRequestBuilder request = get("/api/task_statuses/{id}", task.getId());
+        MockHttpServletRequestBuilder request = get("/api/tasks/{id}", task.getId());
 
 
         MvcResult result = mockMvc.perform(request)
@@ -99,7 +99,7 @@ public class TaskStatusControllerTest {
         data.put("name", "Work");
         data.put("slug", "Lazy");
 
-        var request = put("/api/task_statuses/{id}", task.getId())
+        var request = put("/api/tasks/{id}", task.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 // ObjectMapper конвертирует Map в JSON
                 .content(om.writeValueAsString(data));
@@ -117,7 +117,7 @@ public class TaskStatusControllerTest {
         var task = newTaskStatus();
         taskStatusRepository.save(task);
 
-        var request = delete("/api/task_statuses/{id}", task.getId());
+        var request = delete("/api/tasks/{id}", task.getId());
 
         mockMvc.perform(request)
                 .andExpect(status().isOk());
