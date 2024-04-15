@@ -19,6 +19,7 @@ public abstract class UserMapper {
     @Autowired
     private PasswordEncoder encoder; //полгаю нужно изать после всех мап, чтоб захешировать пароль
 
+    @Mapping(source = "password", target = "passwordDigest")
     public abstract User map(UserCreateDTO dto);
 
 
