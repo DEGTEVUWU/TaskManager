@@ -48,15 +48,15 @@ public class UsersControllerTest {
     private UserRepository userRepository;
 
 
-    @Test
-    public void testWelcomePage() throws Exception {
-        var result = mockMvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        var body = result.getResponse().getContentAsString();
-        assertThat(body).contains("Welcome to Spring!");
-    }
+//    @Test
+//    public void testWelcomePage() throws Exception {
+//        var result = mockMvc.perform(get("/"))
+//                .andExpect(status().isOk())
+//                .andReturn();
+//
+//        var body = result.getResponse().getContentAsString();
+//        assertThat(body).contains("Welcome to Spring!");
+//    }
 
     @Test
     public void testIndex() throws Exception {

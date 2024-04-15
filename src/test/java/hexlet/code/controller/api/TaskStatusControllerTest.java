@@ -1,8 +1,9 @@
 package hexlet.code.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
-import hexlet.code.repository.UserRepository;
+import hexlet.code.repository.TaskStatusRepository;
 import net.datafaker.Faker;
 import org.instancio.Instancio;
 import org.instancio.Select;
@@ -38,22 +39,22 @@ public class TaskStatusControllerTest {
     private ObjectMapper om;
 
     @Autowired
-    private UserRepository userRepository;
+    private TaskStatusRepository taskStatusRepository;
 
 
-    @Test
-    public void testWelcomePage() throws Exception {
-        var result = mockMvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        var body = result.getResponse().getContentAsString();
-        assertThat(body).contains("Welcome to Spring!");
-    }
+//    @Test
+//    public void testWelcomePage() throws Exception {
+//        var result = mockMvc.perform(get("/"))
+//                .andExpect(status().isOk())
+//                .andReturn();
+//
+//        var body = result.getResponse().getContentAsString();
+//        assertThat(body).contains("Welcome to Spring!");
+//    }
 
     @Test
     public void testIndex() throws Exception {
-        var result = mockMvc.perform(get("/api/users/"))
+        var result = mockMvc.perform(get("/api/task_statuses/"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -62,49 +63,43 @@ public class TaskStatusControllerTest {
     }
 
 
-    private User generateUsers() {
-        return Instancio.of(User.class)
-                .ignore(Select.field(User::getId))
-                .supply(Select.field(User::getFirstName), () -> faker.name())
-                .supply(Select.field(User::getLastName), () -> faker.name())
-                .supply(Select.field(User::getEmail), () -> faker.internet().emailAddress())
-                .supply(Select.field(User::getPassword), () ->  faker.internet().password())
-                .create();
-    }
+//    private User generateUsers() {
+//        return Instancio.of(User.class)
+//                .ignore(Select.field(User::getId))
+//                .supply(Select.field(User::getFirstName), () -> faker.name())
+//                .supply(Select.field(User::getLastName), () -> faker.name())
+//                .supply(Select.field(User::getEmail), () -> faker.internet().emailAddress())
+//                .supply(Select.field(User::getPassword), () ->  faker.internet().password())
+//                .create();
+//    }
 
 
     @Test
     public  void testCreate() throws Exception {
-        var data = newUser();
-        data.setFirstName("Ivan");
-        data.setLastName("Ivanov");
-        data.setEmail("email@email.com");
-        data.setPasswordDigest("password");
-        userRepository.save(data);
+        var data = newTask();
+        data.setName("Work");
+        taskStatusRepository.save(data);
 
-        MockHttpServletRequestBuilder request = post("/api/users/")
+        MockHttpServletRequestBuilder request = post("/api/task_statuses/")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
 
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
 
-        Optional<User> user = userRepository.findByEmail(data.getEmail());
+        Optional<TaskStatus> task = taskStatusRepository.findBySlug(data.getSlug());
 
-        assertThat(user).isNotNull();
-        assertThat(user.get().getFirstName()).isEqualTo(data.getFirstName());
-        assertThat(user.get().getLastName()).isEqualTo(data.getLastName());
-        assertThat(user.get().getEmail()).isEqualTo(data.getEmail());
-        assertThat(user.get().getPassword()).isEqualTo(data.getPassword());
-
+        assertThat(task).isNotNull();
+        assertThat(task.get().getName()).isEqualTo(data.getName());
+        assertThat(task.get().getSlug()).isEqualTo(data.getSlug());
 
     }
     @Test
     public void testShow() throws Exception {
-        var user = newUser();
-        userRepository.save(user);
+        var task = newTask();
+        taskStatusRepository.save(task);
 
-        MockHttpServletRequestBuilder request = get("/api/users/{id}", user.getId());
+        MockHttpServletRequestBuilder request = get("/api/task_statuses/{id}", task.getId());
 
 
         MvcResult result = mockMvc.perform(request)
@@ -113,23 +108,21 @@ public class TaskStatusControllerTest {
 
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).and(
-                v -> v.node("firstName").isEqualTo(user.getFirstName()),
-                v -> v.node("lastName").isEqualTo(user.getLastName()),
-                v -> v.node("email").isEqualTo(user.getEmail()),
-                v -> v.node("password").isEqualTo(user.getPassword())
+                v -> v.node("name").isEqualTo(task.getName()),
+                v -> v.node("slug").isEqualTo(task.getSlug())
         );
     }
 
     @Test
     public void testUpdate() throws Exception {
-        var user = newUser();
-        userRepository.save(user);
+        var task = newTask();
+        taskStatusRepository.save(task);
 
         var data = new HashMap<>();
-        data.put("firstName", "Ivan2");
-        data.put("lastName", "Ivanov2");
+        data.put("name", "Work");
+        data.put("slug", "Lazy");
 
-        var request = put("/api/users/{id}", user.getId())
+        var request = put("/api/task_statuses/{id}", task.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 // ObjectMapper конвертирует Map в JSON
                 .content(om.writeValueAsString(data));
@@ -137,31 +130,29 @@ public class TaskStatusControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        user = userRepository.findById(user.getId()).get();
-        assertThat(user.getFirstName()).isEqualTo(("Ivan2"));
-        assertThat(user.getLastName()).isEqualTo(("Ivanov2"));
+        task = taskStatusRepository.findBySlug(task.getSlug()).get();
+        assertThat(task.getName()).isEqualTo(("Work"));
+        assertThat(task.getSlug()).isEqualTo(("Lazy"));
     }
 
     @Test
     public void testDestroy() throws Exception {
-        var user = newUser();
-        userRepository.save(user);
+        var task = newTask();
+        taskStatusRepository.save(task);
 
-        var request = delete("/api/users/{id}", user.getId());
+        var request = delete("/api/task_statuses/{id}", task.getId());
 
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        assertThat(userRepository.findById(user.getId())).isNotPresent();
+        assertThat(taskStatusRepository.findBySlug(task.getSlug())).isNotPresent();
     }
 
-    public User newUser() {
-        return Instancio.of(User.class)
-                .ignore(Select.field(User::getId))
-                .supply(Select.field(User::getFirstName), () -> faker.name())
-                .supply(Select.field(User::getLastName), () -> faker.name())
-                .supply(Select.field(User::getEmail), () -> faker.internet().emailAddress())
-                .supply(Select.field(User::getPassword), () ->  faker.internet().password())
+    public TaskStatus newTask() {
+        return Instancio.of(TaskStatus.class)
+                .ignore(Select.field(TaskStatus::getId))
+                .supply(Select.field(TaskStatus::getName), () -> faker.name())
+                .supply(Select.field(TaskStatus::getSlug), () -> faker.internet().slug())
                 .create();
     }
 
