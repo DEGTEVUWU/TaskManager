@@ -18,6 +18,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Getter
 @Setter
+@Entity
 @Table(name = "task_status")
 @EntityListeners(AuditingEntityListener.class)
 public class TaskStatus implements BaseEntity, UserDetails {

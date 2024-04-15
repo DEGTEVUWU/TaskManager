@@ -28,17 +28,17 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UsersController {
     private static final Logger log = LoggerFactory.getLogger(UsersController.class);
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private UserUtils userUtils;
+//    @Autowired
+//    private UserRepository userRepository;
+//
+//    @Autowired
+//    private UserMapper userMapper;
+//
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
+//
+//    @Autowired
+//    private UserUtils userUtils;
 
     @Autowired
     private UserService userService;
@@ -56,10 +56,6 @@ public class UsersController {
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserDTO> create(@Valid @RequestBody UserCreateDTO userData) throws NoSuchAlgorithmException, InvalidKeySpecException {
-//        User user = userMapper.map(userData);
-//        user.setPasswordDigest(passwordEncoder.encode(user.getPassword())); //хешировать пароль
-//        userRepository.save(user);
-//        UserDTO userDTO = userMapper.map(user);
         UserDTO user = userService.create(userData);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
@@ -67,9 +63,6 @@ public class UsersController {
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserDTO> show(@PathVariable Long id) {
-//        User user = userRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found."));
-//        UserDTO userDTO = userMapper.map(user);
         UserDTO user = userService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
@@ -77,17 +70,6 @@ public class UsersController {
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserDTO> update(@RequestBody @Valid UserUpdateDTO userData, @PathVariable Long id) {
-//        var user = userRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found."));
-////        Long idCat = product.getCategory().getId();
-////        Category category = categoryRepository.findById(idCat)
-////                .orElseThrow(() -> new ResourceNotFoundException("Not Found: " + id));
-//
-//        userMapper.update(userData, user);
-////        product.setCategory(category);
-////        product.setCategory(category);
-//        userRepository.save(user);
-//        var userDTO = userMapper.map(user);
         UserDTO user = userService.update(userData, id);
         return ResponseEntity.status(HttpStatus.OK).body(user);
     }
