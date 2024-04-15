@@ -7,12 +7,14 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
+import hexlet.code.service.UserService;
 import hexlet.code.utils.UserUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import org.slf4j.Logger;
@@ -36,66 +38,64 @@ public class UsersController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private final UserUtils userUtils;
+    private UserUtils userUtils;
 
-    public UsersController(UserUtils userUtils) {
-        this.userUtils = userUtils;
-    }
-
+    @Autowired
+    private UserService userService;
 
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
-    public List<UserDTO> index() {
-        User currentUser = userUtils.getCurrentUser();
-        if (currentUser == null)  throw  new ResourceNotFoundException("UNAUTHORIZED!");
+    public ResponseEntity<List<UserDTO>> index() {
+//        User currentUser = userUtils.getCurrentUser();
+//        if (currentUser == null)  throw  new ResourceNotFoundException("UNAUTHORIZED!");
 
-        var users = userRepository.findAll();
-        var result = users.stream()
-                .map(userMapper::map)
-                .toList();
-
-        return result;
+        List<UserDTO> users = userService.getAll();
+        return ResponseEntity.ok().body(users);
     }
 
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO create(@Valid @RequestBody UserCreateDTO userData) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        User user = userMapper.map(userData);
-        user.setPasswordDigest(passwordEncoder.encode(user.getPassword())); //хешировать пароль
-        userRepository.save(user);
-        UserDTO userDTO = userMapper.map(user);
-        return userDTO;
+    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserCreateDTO userData) throws NoSuchAlgorithmException, InvalidKeySpecException {
+//        User user = userMapper.map(userData);
+//        user.setPasswordDigest(passwordEncoder.encode(user.getPassword())); //хешировать пароль
+//        userRepository.save(user);
+//        UserDTO userDTO = userMapper.map(user);
+        UserDTO user = userService.create(userData);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO show(@PathVariable Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found."));
-        UserDTO userDTO = userMapper.map(user);
-        return userDTO;
+    public ResponseEntity<UserDTO> show(@PathVariable Long id) {
+//        User user = userRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found."));
+//        UserDTO userDTO = userMapper.map(user);
+        UserDTO user = userService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public UserDTO update(@RequestBody @Valid UserUpdateDTO userData, @PathVariable Long id) {
-        var user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found."));
-//        Long idCat = product.getCategory().getId();
-//        Category category = categoryRepository.findById(idCat)
-//                .orElseThrow(() -> new ResourceNotFoundException("Not Found: " + id));
-
-        userMapper.update(userData, user);
-//        product.setCategory(category);
-//        product.setCategory(category);
-        userRepository.save(user);
-        var userDTO = userMapper.map(user);
-        return userDTO;
+    public ResponseEntity<UserDTO> update(@RequestBody @Valid UserUpdateDTO userData, @PathVariable Long id) {
+//        var user = userRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found."));
+////        Long idCat = product.getCategory().getId();
+////        Category category = categoryRepository.findById(idCat)
+////                .orElseThrow(() -> new ResourceNotFoundException("Not Found: " + id));
+//
+//        userMapper.update(userData, user);
+////        product.setCategory(category);
+////        product.setCategory(category);
+//        userRepository.save(user);
+//        var userDTO = userMapper.map(user);
+        UserDTO user = userService.update(userData, id);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
-        userRepository.deleteById(id);
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
