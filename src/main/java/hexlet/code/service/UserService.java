@@ -5,7 +5,9 @@ import hexlet.code.dto.users.UserDTO;
 import hexlet.code.dto.users.UserUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.UserMapper;
+import hexlet.code.model.Task;
 import hexlet.code.model.User;
+import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,12 +17,16 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class UserService {
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     @Autowired
     private UserMapper userMapper;
@@ -29,7 +35,7 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     public List<UserDTO> getAll() {
-        var users = repository.findAll();
+        var users = userRepository.findAll();
         var result = users.stream()
                 .map(userMapper::map)
                 .toList();
@@ -40,7 +46,7 @@ public class UserService {
         try {
             User user = userMapper.map(userData);
             user.setPasswordDigest(passwordEncoder.encode(user.getPassword())); //хешируем пароль
-            repository.save(user);
+            userRepository.save(user);
             var userDTO = userMapper.map(user);
             return userDTO;
         } catch(NoSuchElementException ex) {
@@ -49,7 +55,7 @@ public class UserService {
     }
 
     public UserDTO findById(Long id) {
-        var user = repository.findById(id)
+        var user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found!"));
         var userDTO = userMapper.map(user);
         return userDTO;
@@ -57,10 +63,10 @@ public class UserService {
 
     public UserDTO update(UserUpdateDTO userData, Long id) {
         try {
-            var user = repository.findById(id)
+            var user = userRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found!"));
             userMapper.update(userData, user);
-            repository.save(user);
+            userRepository.save(user);
             var userDTO = userMapper.map(user);
             return userDTO;
         } catch (NoSuchElementException ex) {
@@ -70,6 +76,17 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        repository.deleteById(id);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found!"));
+        if (user != null) {
+            List<Task> tasks = taskRepository.findByAssignee(user);
+            if (tasks.isEmpty()) {
+                taskRepository.deleteById(id);
+            } else {
+                 throw new ResponseStatusException(HttpStatus.CONFLICT, "It is not possible to remove the " +
+                         "user from the id " + id + " , as there are tasks attached to it");
+            }
+        }
+//        userRepository.deleteById(id);
     }
 }

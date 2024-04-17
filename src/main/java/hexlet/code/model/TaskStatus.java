@@ -40,7 +40,7 @@ public class TaskStatus implements BaseEntity, UserDetails {
     private LocalDate createdAt;
 
 
-    @OneToMany(mappedBy = "taskStatus", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "taskStatus", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Task> tasks = new ArrayList<>();
 
     public void addTask(Task task) {
