@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/task_statuses")
-public class TaskStatusController {
+public class TaskStatusesController {
     @Autowired
     private TaskStatusService taskStatusService;
 

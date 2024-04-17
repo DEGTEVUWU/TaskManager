@@ -14,15 +14,15 @@ import java.time.LocalDate;
 @Setter
 public class TaskUpdateDTO {
 //    @NotNull
-    private JsonNullable<Long> assigneeId;
+    private Long assigneeId;
 
 //    @NotBlank
-    private JsonNullable<String> title;
+    private String title;
 
 //    @NotBlank
-    private JsonNullable<String> content;
+    private String content;
 
 //    @NotBlank
-    private JsonNullable<TaskStatus> status;
+    private String status;
 
 }

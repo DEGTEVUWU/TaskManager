@@ -45,11 +45,11 @@ public class TaskStatus implements BaseEntity, UserDetails {
 
     public void addTask(Task task) {
         tasks.add(task);
-        task.setTaskStatus(this);
+        task.setStatus(this);
     }
     public void removeTask(Task task) {
         tasks.remove(task);
-        task.setTaskStatus(null);
+        task.setStatus(null);
     }
 
 

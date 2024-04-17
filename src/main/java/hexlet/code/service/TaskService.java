@@ -29,9 +29,6 @@ public class TaskService {
     @Autowired
     private TaskMapper taskMapper;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-
     public List<TaskDTO> getAll() {
         List<Task> tasks = repository.findAll();
         var result = tasks.stream()
@@ -42,10 +39,9 @@ public class TaskService {
 
     public TaskDTO create(TaskCreateDTO taskData) {
         try {
-            Task tasks = taskMapper.map(taskData);
-//            task.set(passwordEncoder.encode(user.getPassword())); //хешируем пароль
-            repository.save(tasks);
-            var taskDTO = taskMapper.map(tasks);
+            Task task = taskMapper.map(taskData);
+            repository.save(task);
+            var taskDTO = taskMapper.map(task);
             return taskDTO;
         } catch(NoSuchElementException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());

@@ -32,17 +32,12 @@ public class Task implements BaseEntity, UserDetails {
 
     private String description;
 
-    @NotBlank
-    @ManyToOne(fetch = FetchType.LAZY)
-    private TaskStatus taskStatus;
-
-
-    @Column(nullable = false)
+//    @JoinColumn(nullable = false)
     @ManyToOne
     private User assignee;
 
 
-    @Column(nullable = false)
+//    @JoinColumn(nullable = false)
     @ManyToOne
     private TaskStatus status;
 
