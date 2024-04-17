@@ -14,14 +14,19 @@ public class TaskCreateDTO {
     private Long index;
 
     @NotNull
-//    @JsonProperty("assignee_id")
-    private Long assignee_id;
+    @JsonProperty("assignee_id")
+    private Long assigneeId;
 
     @NotBlank
-    private String title;
-    @NotBlank
-    private String content;
+    @JsonProperty("title")
+    private String name;
 
+    @NotBlank
+    @JsonProperty("content")
+    private String description;
+
+//    @NotNull
+    @JsonProperty("status")
     private String status;
 
 }

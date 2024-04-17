@@ -30,6 +30,7 @@ public class Task implements BaseEntity, UserDetails {
 
     private Long index;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
 //    @JoinColumn(nullable = false)
@@ -39,7 +40,7 @@ public class Task implements BaseEntity, UserDetails {
 
 //    @JoinColumn(nullable = false)
     @ManyToOne
-    private TaskStatus status;
+    private TaskStatus taskStatus;
 
 
     @CreatedDate

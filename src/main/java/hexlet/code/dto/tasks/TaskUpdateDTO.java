@@ -1,5 +1,6 @@
 package hexlet.code.dto.tasks;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
 import jakarta.validation.constraints.NotBlank;
@@ -14,15 +15,19 @@ import java.time.LocalDate;
 @Setter
 public class TaskUpdateDTO {
 //    @NotNull
+    @JsonProperty("assignee_id")
     private Long assigneeId;
 
 //    @NotBlank
-    private String title;
+    @JsonProperty("title")
+    private String name;
 
 //    @NotBlank
-    private String content;
+    @JsonProperty("content")
+    private String description;
 
 //    @NotBlank
+    @JsonProperty("status")
     private String status;
 
 }

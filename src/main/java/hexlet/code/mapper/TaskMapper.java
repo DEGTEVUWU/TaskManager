@@ -9,6 +9,7 @@ import hexlet.code.model.User;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import org.mapstruct.*;
+import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(
@@ -24,40 +25,37 @@ public abstract class TaskMapper {
     @Autowired
     private TaskStatusRepository taskStatusRepository;
 
-    @Mapping(source = "title", target = "name")
-    @Mapping(source = "content", target = "description")
-    @Mapping(source = "assignee_id", target = "assignee")
-    @Mapping(source = "status", target = "status")
+    @Mapping(source = "assigneeId", target = "assignee")
+    @Mapping(source = "status", target = "taskStatus", qualifiedByName = "ModelFromStatusSlug")
     public abstract Task map(TaskCreateDTO dto);
 
-    @Mapping(source = "name", target = "title")
-    @Mapping(source = "description", target = "content")
-    @Mapping(source = "assignee.id", target = "assignee_id")
-    @Mapping(source = "status.slug", target = "status")
+    @Mapping(source = "assignee.id", target = "assigneeId")
+    @Mapping(source = "taskStatus", target = "status", qualifiedByName = "statusSlugFromModel")
     public abstract TaskDTO map(Task model);
 
-    @Mapping(source = "title", target = "name")
-    @Mapping(source = "content", target = "description")
     @Mapping(source = "assigneeId", target = "assignee")
-    @Mapping(source = "status", target = "status")
+    @Mapping(source = "status", target = "taskStatus")
     public abstract void update(TaskUpdateDTO dto, @MappingTarget Task model);
 
-//    @Named("userIdToUser")
-//    User mapUserIdToUser(Long id) {
-//        return userRepository.findById(id).orElse(null);
+
+//    public TaskStatus toEntity(String slug) {
+//        return taskStatusRepository.findBySlug(slug)
+//                .orElseThrow();
 //    }
 //
-//    @Named("statusSlugToTaskStatus")
-//    TaskStatus mapStatusSlugToTaskStatus(String slug) {
-//        return taskStatusRepository.findBySlug(slug).orElse(null);
+//    public User toEntity(JsonNullable<Long> assigneeId) {
+//        return userRepository.findById(assigneeId.get())
+//                .orElseThrow();
 //    }
-//
-//    @Named("userToUserId")
-//    Long mapUserToUserId(User user) {
-//        return user.getId();
-//    }
-//    @Named("statusToStatusSlug")
-//    String mapTaskStatusToSlugStatus(TaskStatus status) {
-//        return status.getSlug();
-//    }
+
+
+    @Named("ModelFromStatusSlug")
+    TaskStatus ModelFromStatusSlug(String slug) {
+        return taskStatusRepository.findBySlug(slug).orElse(null);
+    }
+
+    @Named("statusSlugFromModel")
+    String statusSlugFromModel(TaskStatus status) {
+        return status.getSlug();
+    }
 }
