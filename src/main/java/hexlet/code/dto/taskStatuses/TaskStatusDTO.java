@@ -1,4 +1,4 @@
-package hexlet.code.dto.taskStatus;
+package hexlet.code.dto.taskStatuses;
 
 import lombok.Getter;
 import lombok.Setter;

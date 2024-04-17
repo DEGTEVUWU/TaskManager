@@ -1,4 +1,4 @@
-package hexlet.code.dto.taskStatus;
+package hexlet.code.dto.taskStatuses;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TaskStatusCreateDTO {
+public class TaskStatusUpdateDTO {
 
     @NotBlank
     @Size(min = 1)

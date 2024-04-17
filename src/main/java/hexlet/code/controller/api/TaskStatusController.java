@@ -1,13 +1,9 @@
 package hexlet.code.controller.api;
 
-import hexlet.code.dto.taskStatus.TaskStatusCreateDTO;
-import hexlet.code.dto.taskStatus.TaskStatusDTO;
-import hexlet.code.dto.taskStatus.TaskStatusUpdateDTO;
-import hexlet.code.dto.users.UserCreateDTO;
-import hexlet.code.dto.users.UserDTO;
-import hexlet.code.dto.users.UserUpdateDTO;
+import hexlet.code.dto.taskStatuses.TaskStatusCreateDTO;
+import hexlet.code.dto.taskStatuses.TaskStatusDTO;
+import hexlet.code.dto.taskStatuses.TaskStatusUpdateDTO;
 import hexlet.code.service.TaskStatusService;
-import hexlet.code.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

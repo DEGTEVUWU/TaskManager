@@ -1,15 +1,13 @@
-package hexlet.code.dto.taskStatus;
+package hexlet.code.dto.taskStatuses;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
-public class TaskStatusUpdateDTO {
+public class TaskStatusCreateDTO {
 
     @NotBlank
     @Size(min = 1)

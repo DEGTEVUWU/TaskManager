@@ -1,13 +1,11 @@
 package hexlet.code.mapper;
 
 
-import hexlet.code.dto.taskStatus.TaskStatusCreateDTO;
-import hexlet.code.dto.taskStatus.TaskStatusDTO;
-import hexlet.code.dto.taskStatus.TaskStatusUpdateDTO;
+import hexlet.code.dto.taskStatuses.TaskStatusCreateDTO;
+import hexlet.code.dto.taskStatuses.TaskStatusDTO;
+import hexlet.code.dto.taskStatuses.TaskStatusUpdateDTO;
 import hexlet.code.model.TaskStatus;
 import org.mapstruct.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Mapper(
         uses = { ReferenceMapper.class, JsonNullableMapper.class },

@@ -15,6 +15,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -44,7 +45,19 @@ public class User implements BaseEntity, UserDetails {
     @Column(nullable = false)
     private String passwordDigest;
 
-    private String role;
+//    private String role;
+
+    @OneToMany(mappedBy = "assignee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Task> tasks = new ArrayList<>();
+
+    public void addTask(Task task) {
+        tasks.add(task);
+        task.setAssignee(this);
+    }
+    public void removeTask(Task task) {
+        tasks.remove(task);
+        task.setAssignee(null);
+    }
 
     @CreatedDate
     private LocalDate createdAt;

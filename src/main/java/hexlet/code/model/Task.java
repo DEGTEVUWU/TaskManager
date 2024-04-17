@@ -36,9 +36,16 @@ public class Task implements BaseEntity, UserDetails {
     @ManyToOne(fetch = FetchType.LAZY)
     private TaskStatus taskStatus;
 
-    @Column(nullable = true)
+
+    @Column(nullable = false)
     @ManyToOne
     private User assignee;
+
+
+    @Column(nullable = false)
+    @ManyToOne
+    private TaskStatus status;
+
 
     @CreatedDate
     private LocalDate createdAt;
