@@ -2,6 +2,7 @@ package hexlet.code.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.model.TaskStatus;
+import hexlet.code.model.Task;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import net.datafaker.Faker;
@@ -53,9 +54,11 @@ public class TaskControllerTest {
 
     @Test
     public  void testCreate() throws Exception {
-        var data = newTaskStatus();
+        Task data = newTask();
         data.setName("Work");
-        taskStatusRepository.save(data);
+        data.setIndex(1234L);
+        data.setDescription("This is a test");
+        taskRepository.save(data);
 
         MockHttpServletRequestBuilder request = post("/api/tasks/")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -64,17 +67,17 @@ public class TaskControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
 
-        Optional<TaskStatus> task = taskStatusRepository.findBySlug(data.getSlug());
+        Optional<Task> task = taskRepository.findById(data.getId());
 
         assertThat(task).isNotNull();
         assertThat(task.get().getName()).isEqualTo(data.getName());
-        assertThat(task.get().getSlug()).isEqualTo(data.getSlug());
+        assertThat(task.get().getDescription()).isEqualTo(data.getDescription());
 
     }
     @Test
     public void testShow() throws Exception {
-        var task = newTaskStatus();
-        taskStatusRepository.save(task);
+        var task = newTask();
+        taskRepository.save(task);
 
         MockHttpServletRequestBuilder request = get("/api/tasks/{id}", task.getId());
 
@@ -86,18 +89,20 @@ public class TaskControllerTest {
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).and(
                 v -> v.node("name").isEqualTo(task.getName()),
-                v -> v.node("slug").isEqualTo(task.getSlug())
+                v -> v.node("description").isEqualTo(task.getDescription()),
+                v -> v.node("index").isEqualTo(task.getIndex())
         );
     }
 
     @Test
     public void testUpdate() throws Exception {
-        var task = newTaskStatus();
-        taskStatusRepository.save(task);
+        var task = newTask();
+        taskRepository.save(task);
 
         var data = new HashMap<>();
         data.put("name", "Work");
-        data.put("slug", "Lazy");
+        data.put("description", "Some description");
+        data.put("index", 1234L);
 
         var request = put("/api/tasks/{id}", task.getId())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -107,29 +112,31 @@ public class TaskControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        task = taskStatusRepository.findBySlug(task.getSlug()).get();
+        task = taskRepository.findById(task.getId()).get();
         assertThat(task.getName()).isEqualTo(("Work"));
-        assertThat(task.getSlug()).isEqualTo(("Lazy"));
+        assertThat(task.getDescription()).isEqualTo(("Some description"));
+        assertThat(task.getIndex()).isEqualTo(1234L);
     }
 
     @Test
     public void testDestroy() throws Exception {
-        var task = newTaskStatus();
-        taskStatusRepository.save(task);
+        var task = newTask();
+        taskRepository.save(task);
 
         var request = delete("/api/tasks/{id}", task.getId());
 
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        assertThat(taskStatusRepository.findBySlug(task.getSlug())).isNotPresent();
+        assertThat(taskRepository.findById(task.getId())).isNotPresent();
     }
 
-    public TaskStatus newTaskStatus() {
-        return Instancio.of(TaskStatus.class)
-                .ignore(Select.field(TaskStatus::getId))
-                .supply(Select.field(TaskStatus::getName), () -> faker.name())
-                .supply(Select.field(TaskStatus::getSlug), () -> faker.internet().slug())
+    public Task newTask() {
+        return Instancio.of(Task.class)
+                .ignore(Select.field(Task::getId))
+                .supply(Select.field(Task::getName), () -> faker.name())
+                .supply(Select.field(Task::getDescription), () -> faker.text())
+                .supply(Select.field(Task::getIndex), () -> faker.code())
                 .create();
     }
 
