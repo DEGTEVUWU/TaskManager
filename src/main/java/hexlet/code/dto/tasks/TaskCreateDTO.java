@@ -21,11 +21,11 @@ public class TaskCreateDTO {
     @JsonProperty("title")
     private String name;
 
-    @NotBlank
+//    @NotBlank
     @JsonProperty("content")
     private String description;
 
-//    @NotNull
+    @NotNull
     @JsonProperty("status")
     private String status;
 

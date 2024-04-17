@@ -28,7 +28,7 @@ public class TaskStatus implements BaseEntity, UserDetails {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+//    @Column(nullable = false)
     @Size(min = 1)
     private String name;
 

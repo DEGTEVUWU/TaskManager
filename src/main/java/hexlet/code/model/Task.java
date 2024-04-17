@@ -38,8 +38,8 @@ public class Task implements BaseEntity, UserDetails {
     private User assignee;
 
 
-//    @JoinColumn(nullable = false)
-    @ManyToOne
+    @JoinColumn(nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
     private TaskStatus taskStatus;
 
 

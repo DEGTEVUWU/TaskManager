@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class TaskStatusUpdateDTO {
 
-    @NotBlank
+//    @NotBlank
     @Size(min = 1)
     private String name;
 

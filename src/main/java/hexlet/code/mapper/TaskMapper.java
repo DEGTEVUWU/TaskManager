@@ -26,15 +26,20 @@ public abstract class TaskMapper {
     private TaskStatusRepository taskStatusRepository;
 
     @Mapping(source = "assigneeId", target = "assignee")
-    @Mapping(source = "status", target = "taskStatus", qualifiedByName = "ModelFromStatusSlug")
+//    @Mapping(source = "status", target = "taskStatus", qualifiedByName = "ModelFromStatusSlug")
+    @Mapping(source = "status", target = "taskStatus.slug")
     public abstract Task map(TaskCreateDTO dto);
 
     @Mapping(source = "assignee.id", target = "assigneeId")
-    @Mapping(source = "taskStatus", target = "status", qualifiedByName = "statusSlugFromModel")
+//    @Mapping(source = "taskStatus", target = "status", qualifiedByName = "statusSlugFromModel")
+    @Mapping(source = "taskStatus.slug", target = "status")
     public abstract TaskDTO map(Task model);
 
     @Mapping(source = "assigneeId", target = "assignee")
-    @Mapping(source = "status", target = "taskStatus")
+//    @Mapping(source = "status", target = "taskStatus", qualifiedByName = "ModelFromStatusSlug")
+    @Mapping(source = "status", target = "taskStatus.slug")
+    @Mapping(source = "name", target = "name")
+    @Mapping(source = "description", target = "description")
     public abstract void update(TaskUpdateDTO dto, @MappingTarget Task model);
 
 
@@ -49,13 +54,13 @@ public abstract class TaskMapper {
 //    }
 
 
-    @Named("ModelFromStatusSlug")
-    TaskStatus ModelFromStatusSlug(String slug) {
-        return taskStatusRepository.findBySlug(slug).orElse(null);
-    }
-
-    @Named("statusSlugFromModel")
-    String statusSlugFromModel(TaskStatus status) {
-        return status.getSlug();
-    }
+//    @Named("ModelFromStatusSlug")
+//    TaskStatus ModelFromStatusSlug(String slug) {
+//        return taskStatusRepository.findBySlug(slug).orElse(null);
+//    }
+//
+//    @Named("statusSlugFromModel")
+//    String statusSlugFromModel(TaskStatus status) {
+//        return status.getSlug();
+//    }
 }
