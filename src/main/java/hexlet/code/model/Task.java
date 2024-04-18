@@ -11,7 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -42,6 +44,20 @@ public class Task implements BaseEntity, UserDetails {
     @ManyToOne(cascade = CascadeType.ALL)
     private TaskStatus taskStatus;
 
+    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+    @JoinTable(name = "task_labels",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "label_id"))
+    private Set<Label> labels = new HashSet<>();
+
+    public void addLabel(Label label) {
+        labels.add(label);
+        label.getTasks().add(this);
+    }
+    public void removeLabel(Label label) {
+        labels.remove(label);
+        label.getTasks().remove(this);
+    }
 
     @CreatedDate
     private LocalDate createdAt;

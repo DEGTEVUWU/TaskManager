@@ -44,7 +44,7 @@ public class TaskControllerTest {
 
     @Test
     public void testIndex() throws Exception {
-        var result = mockMvc.perform(get("/api/tasks/"))
+        var result = mockMvc.perform(get("/api/tasks"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -60,7 +60,7 @@ public class TaskControllerTest {
         data.setDescription("This is a test");
         taskRepository.save(data);
 
-        MockHttpServletRequestBuilder request = post("/api/tasks/")
+        MockHttpServletRequestBuilder request = post("/api/tasks")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
 

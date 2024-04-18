@@ -60,7 +60,7 @@ public class UsersControllerTest {
 
     @Test
     public void testIndex() throws Exception {
-        var result = mockMvc.perform(get("/api/users/"))
+        var result = mockMvc.perform(get("/api/users"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -89,7 +89,7 @@ public class UsersControllerTest {
         data.setPasswordDigest("password");
         userRepository.save(data);
 
-        MockHttpServletRequestBuilder request = post("/api/users/")
+        MockHttpServletRequestBuilder request = post("/api/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
 

@@ -43,7 +43,7 @@ public class TaskStatusControllerTest {
 
     @Test
     public void testIndex() throws Exception {
-        var result = mockMvc.perform(get("/api/task_statuses/"))
+        var result = mockMvc.perform(get("/api/task_statuses"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -57,7 +57,7 @@ public class TaskStatusControllerTest {
         data.setName("Work");
         taskStatusRepository.save(data);
 
-        MockHttpServletRequestBuilder request = post("/api/task_statuses/")
+        MockHttpServletRequestBuilder request = post("/api/task_statuses")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
 
