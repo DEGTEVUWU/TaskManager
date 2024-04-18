@@ -1,5 +1,6 @@
 package hexlet.code.repository;
 
+import hexlet.code.model.Label;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     Optional<Task> findByDescription(String slug);
     List<Task> findByAssignee(User user);
     List<Task> findByTaskStatus(TaskStatus taskStatus);
+    List<Label> findByLabel(Label label);
 }

@@ -41,8 +41,8 @@ public class TasksController {
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TaskDTO> show(@PathVariable Long id) {
-        TaskDTO tasks = tasksService.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(tasks);
+        TaskDTO task = tasksService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(task);
     }
 
     @PutMapping(path = "/{id}")
