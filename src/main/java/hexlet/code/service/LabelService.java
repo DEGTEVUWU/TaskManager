@@ -76,7 +76,7 @@ public class LabelService {
         Label label = labelRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Label with id " + id + " not found!"));
         if (label != null) {
-            List<Label> tasks = taskRepository.findByLabel(label);
+            List<Task> tasks = taskRepository.findByLabels(label);
             if (tasks.isEmpty()) {
                 labelRepository.deleteById(id);
             } else {

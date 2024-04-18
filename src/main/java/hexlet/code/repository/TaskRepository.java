@@ -15,5 +15,5 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     Optional<Task> findByDescription(String slug);
     List<Task> findByAssignee(User user);
     List<Task> findByTaskStatus(TaskStatus taskStatus);
-    List<Label> findByLabel(Label label);
+    List<Task> findByLabels(Label label);
 }
