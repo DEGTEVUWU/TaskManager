@@ -6,6 +6,10 @@ plugins {
 	checkstyle
 	jacoco
 	id("checkstyle")
+
+	id ("com.github.johnrengelman.processes") version "0.5.0"
+	id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
+
 }
 
 group = "hexlet.code"
@@ -34,13 +38,15 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-devtools")
 	implementation("org.springframework.boot:spring-boot-starter-validation") //нужна для разного рода валидаций полей сущностей
-	implementation("org.springframework.boot:spring-boot-starter-security") //Секьюрити - хеш пароля..
+	implementation("org.springframework.boot:spring-boot-starter-security") //Секьюрити/хеш пароля..
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
 
 
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	runtimeOnly("com.h2database:h2")
 	implementation("org.openapitools:jackson-databind-nullable:0.2.6") //нужна для null-маппера, чтоб работать с  null, как передаваемыми значнеиями
+
+	implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0") //для генерации док-ции по API проекта
 
 	testCompileOnly("org.projectlombok:lombok:1.18.30")
 	testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
