@@ -31,25 +31,11 @@ public class TasksController {
     @Autowired
     private TaskService tasksService;
 
-    @Autowired
-    private TaskSpecification tasksSpecification;
-
-    @Autowired
-    private TaskRepository taskRepository;
-
-    @Autowired
-    private TaskMapper tasksMapper;
-
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<TaskDTO>> index(TaskParamsDTO params) {
-        Specification<Task> spec = tasksSpecification.build(params);
-        List<Task> tasks = taskRepository.findAll(spec);
-        List<TaskDTO> result = tasks.stream()
-                .map(tasksMapper::map)
-                .toList();
-//        List<TaskDTO> tasks = tasksService.getAll();
-        return ResponseEntity.ok().body(result);
+        List<TaskDTO> tasks = tasksService.getAll(params);
+        return ResponseEntity.ok().body(tasks);
     }
 
     @PostMapping(path = "")

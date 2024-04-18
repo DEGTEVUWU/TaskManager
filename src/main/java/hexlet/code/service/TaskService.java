@@ -5,6 +5,7 @@ import hexlet.code.dto.taskStatuses.TaskStatusDTO;
 import hexlet.code.dto.taskStatuses.TaskStatusUpdateDTO;
 import hexlet.code.dto.tasks.TaskCreateDTO;
 import hexlet.code.dto.tasks.TaskDTO;
+import hexlet.code.dto.tasks.TaskParamsDTO;
 import hexlet.code.dto.tasks.TaskUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskMapper;
@@ -13,7 +14,9 @@ import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
+import hexlet.code.specification.TaskSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,9 +32,13 @@ public class TaskService {
     @Autowired
     private TaskMapper taskMapper;
 
-    public List<TaskDTO> getAll() {
-        List<Task> tasks = repository.findAll();
-        var result = tasks.stream()
+    @Autowired
+    private TaskSpecification taskSpecification;
+
+    public List<TaskDTO> getAll(TaskParamsDTO params) {
+        Specification<Task> spec = taskSpecification.build(params);
+        List<Task> tasks = repository.findAll(spec);
+        List<TaskDTO> result = tasks.stream()
                 .map(taskMapper::map)
                 .toList();
         return result;
