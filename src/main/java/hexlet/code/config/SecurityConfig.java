@@ -51,15 +51,13 @@ public class SecurityConfig {
                         .requestMatchers("/").permitAll()
                         .requestMatchers("/index.html").permitAll()
                         .requestMatchers("/assets/**").permitAll()
-//                        .requestMatchers("/api/users/**").authenticated()
-//                        .requestMatchers("/api/task_statuses/**").authenticated()
-//                        .requestMatchers("api/tasks/**").authenticated()
-//                        .requestMatchers("api/labels/**").authenticated()
-                        .requestMatchers("/api/users/**").permitAll()
-                        .requestMatchers("/api/task_statuses/**").permitAll()
-                        .requestMatchers("api/tasks/**").permitAll()
-                        .requestMatchers("api/labels/**").permitAll()
-//                        .requestMatchers(HttpMethod.GET).permitAll()
+                        .requestMatchers("/api/users/**").authenticated()
+                        .requestMatchers("/api/task_statuses/**").authenticated()
+                        .requestMatchers("api/tasks/**").authenticated()
+                        .requestMatchers("api/labels/**").authenticated()
+                        .requestMatchers("/v3/api-docs/**").permitAll() //эти два пути для получения док-ции по API и работы
+                        .requestMatchers("/swagger-ui/**").permitAll() // с swagger(граф отображение нормальное) http://localhost:8080/swagger-ui/index.html
+                        .requestMatchers("/app/**").permitAll()  //путь из офф доки не работает localhost:8080/app/swagger-ui.html
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer((rs) -> rs.jwt((jwt) -> jwt.decoder(jwtDecoder)))

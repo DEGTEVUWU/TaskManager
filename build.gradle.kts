@@ -47,6 +47,7 @@ dependencies {
 	implementation("org.openapitools:jackson-databind-nullable:0.2.6") //нужна для null-маппера, чтоб работать с  null, как передаваемыми значнеиями
 
 	implementation ("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0") //для генерации док-ции по API проекта
+//	implementation ("org.springdoc:springdoc-openapi-ui:2.5.0") //для генерации док-ции по API проекта
 
 	testCompileOnly("org.projectlombok:lombok:1.18.30")
 	testAnnotationProcessor("org.projectlombok:lombok:1.18.30")
