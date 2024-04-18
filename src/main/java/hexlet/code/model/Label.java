@@ -3,6 +3,7 @@ package hexlet.code.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.mapstruct.Mapping;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,6 +20,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "labels")
+@NoArgsConstructor
 public class Label implements BaseEntity {
 
     @Id
@@ -34,4 +36,8 @@ public class Label implements BaseEntity {
 
     @ManyToMany(mappedBy = "labels")
     private Set<Task> tasks = new HashSet<>();
+
+    public Label(String name) {
+        this.name = name;
+    }
 }

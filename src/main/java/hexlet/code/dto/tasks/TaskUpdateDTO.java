@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -29,5 +30,8 @@ public class TaskUpdateDTO {
 //    @NotBlank
     @JsonProperty("status")
     private String status;
+
+    @JsonProperty("labels")
+    private Set<Long> labelIds;
 
 }

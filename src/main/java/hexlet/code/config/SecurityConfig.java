@@ -54,6 +54,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/task_statuses/**").authenticated()
                         .requestMatchers("api/tasks/**").authenticated()
+                        .requestMatchers("api/labels/**").authenticated()
 //                        .requestMatchers(HttpMethod.GET).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
