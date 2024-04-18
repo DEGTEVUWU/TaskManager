@@ -5,11 +5,18 @@ import hexlet.code.dto.taskStatuses.TaskStatusDTO;
 import hexlet.code.dto.taskStatuses.TaskStatusUpdateDTO;
 import hexlet.code.dto.tasks.TaskCreateDTO;
 import hexlet.code.dto.tasks.TaskDTO;
+import hexlet.code.dto.tasks.TaskParamsDTO;
 import hexlet.code.dto.tasks.TaskUpdateDTO;
+import hexlet.code.mapper.TaskMapper;
+import hexlet.code.model.Task;
+import hexlet.code.repository.TaskRepository;
 import hexlet.code.service.TaskService;
 import hexlet.code.service.TaskStatusService;
+import hexlet.code.specification.TaskSpecification;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,11 +31,25 @@ public class TasksController {
     @Autowired
     private TaskService tasksService;
 
+    @Autowired
+    private TaskSpecification tasksSpecification;
+
+    @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
+    private TaskMapper tasksMapper;
+
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<TaskDTO>> index() {
-        List<TaskDTO> tasks = tasksService.getAll();
-        return ResponseEntity.ok().body(tasks);
+    public ResponseEntity<List<TaskDTO>> index(TaskParamsDTO params) {
+        Specification<Task> spec = tasksSpecification.build(params);
+        List<Task> tasks = taskRepository.findAll(spec);
+        List<TaskDTO> result = tasks.stream()
+                .map(tasksMapper::map)
+                .toList();
+//        List<TaskDTO> tasks = tasksService.getAll();
+        return ResponseEntity.ok().body(result);
     }
 
     @PostMapping(path = "")

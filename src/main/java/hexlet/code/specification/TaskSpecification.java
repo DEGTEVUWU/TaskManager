@@ -16,7 +16,7 @@ public class TaskSpecification {
     private Specification<Task> withTitleCount(String titleCount) {
         return (root, query, cb) -> titleCount == null
                 ? cb.conjunction()
-                : cb.like((root.get("title")), "%" + titleCount + "%");
+                : cb.like((root.get("name")), "%" + titleCount + "%");
     }
     private Specification<Task> withAssigneeId(Long assigneeId) {
         return (root, query, cb) -> assigneeId == null
