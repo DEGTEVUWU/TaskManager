@@ -44,10 +44,11 @@ public class Task implements BaseEntity, UserDetails {
     @ManyToOne(cascade = CascadeType.ALL)
     private TaskStatus taskStatus;
 
-    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-    @JoinTable(name = "task_labels",
-            joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "label_id"))
+//    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
+//    @JoinTable(name = "task_labels",
+//            joinColumns = @JoinColumn(name = "task_id"),
+//            inverseJoinColumns = @JoinColumn(name = "label_id"))
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Label> labels = new HashSet<>();
 
     public void addLabel(Label label) {

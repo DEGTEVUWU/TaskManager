@@ -29,7 +29,9 @@ public class LabelsController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<LabelDTO>> index() {
         List<LabelDTO> labels = labelService.getAll();
-        return ResponseEntity.ok().body(labels);
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(labels.size()))
+                .body(labels);
     }
 
     @PostMapping(path = "")

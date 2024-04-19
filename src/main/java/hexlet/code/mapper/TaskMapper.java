@@ -30,23 +30,24 @@ public abstract class TaskMapper {
 
     @Mapping(source = "assigneeId", target = "assignee")
     @Mapping(source = "status", target = "taskStatus.slug")
-    @Mapping(source = "labelIds", target = "labels")  // Игнорируем автоматический маппинг
+    @Mapping(source = "labelIds", target = "labels", qualifiedByName = "labelIdsToModel")
     public abstract Task map(TaskCreateDTO dto);
 
     @Mapping(source = "assignee.id", target = "assigneeId")
     @Mapping(source = "taskStatus.slug", target = "status")
-    @Mapping(source = "labels", target = "labelIds")
+    @Mapping(source = "labels", target = "labelIds", qualifiedByName = "modelToLabelIds")
     public abstract TaskDTO map(Task model);
 
     @Mapping(source = "assigneeId", target = "assignee")
     @Mapping(source = "status", target = "taskStatus.slug")
-    @Mapping(source = "name", target = "name")
-    @Mapping(source = "description", target = "description")
+//    @Mapping(source = "name", target = "name")
+//    @Mapping(source = "description", target = "description")
     @Mapping(source = "labelIds", target = "labels")
     public abstract void update(TaskUpdateDTO dto, @MappingTarget Task model);
 
 
-    public Set<Label> toEntity(Set<Long> labelIds) {
+    @Named("labelIdsToModel")
+    Set<Label> labelIdsToModel(Set<Long> labelIds) {
         if (labelIds == null) {
             return null;
         } else {
@@ -55,11 +56,34 @@ public abstract class TaskMapper {
                     .collect(Collectors.toSet());
         }
     }
-    public Set<Long> toDTO(Set<Label> labels) {
+    @Named("modelToLabelIds")
+    Set<Long> modelToLabelIds(Set<Label> labels) {
         return labels.stream()
                 .map(Label::getId)
                 .collect(Collectors.toSet());
     }
+
+
+
+//    public Set<Label> toEntity(Set<Long> labelIds) {
+//        if (labelIds == null) {
+//            return null;
+//        } else {
+//            return labelIds.stream()
+//                    .map(id -> labelRepository.findById(id).orElseThrow())
+//                    .collect(Collectors.toSet());
+//        }
+//    }
+//    public Set<Long> toDTO(Set<Label> labels) {
+//        return labels.stream()
+//                .map(Label::getId)
+//                .collect(Collectors.toSet());
+//    }
+
+
+
+
+
 //    public TaskStatus toEntity(String slug) {
 //        return taskStatusRepository.findBySlug(slug)
 //                .orElseThrow();

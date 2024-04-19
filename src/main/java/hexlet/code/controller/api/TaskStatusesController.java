@@ -23,11 +23,11 @@ public class TaskStatusesController {
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<TaskStatusDTO>> index() {
-//        User currentUser = userUtils.getCurrentUser();
-//        if (currentUser == null)  throw  new ResourceNotFoundException("UNAUTHORIZED!");
 
         List<TaskStatusDTO> taskStatuses = taskStatusService.getAll();
-        return ResponseEntity.ok().body(taskStatuses);
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(taskStatuses.size()))
+                .body(taskStatuses);
     }
 
     @PostMapping(path = "")

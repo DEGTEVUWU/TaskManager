@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class TaskCreateDTO {
-    @NotNull
+//    @NotNull
     private Long index;
 
     @NotNull

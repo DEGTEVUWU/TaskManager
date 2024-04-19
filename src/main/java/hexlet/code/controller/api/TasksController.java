@@ -35,7 +35,9 @@ public class TasksController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<TaskDTO>> index(TaskParamsDTO params) {
         List<TaskDTO> tasks = tasksService.getAll(params);
-        return ResponseEntity.ok().body(tasks);
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(tasks.size()))
+                .body(tasks);
     }
 
     @PostMapping(path = "")

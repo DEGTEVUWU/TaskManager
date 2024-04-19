@@ -46,11 +46,10 @@ public class UsersController {
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<UserDTO>> index() {
-//        User currentUser = userUtils.getCurrentUser();
-//        if (currentUser == null)  throw  new ResourceNotFoundException("UNAUTHORIZED!");
-
         List<UserDTO> users = userService.getAll();
-        return ResponseEntity.ok().body(users);
+        return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(users.size()))
+                .body(users);
     }
 
     @PostMapping(path = "")
