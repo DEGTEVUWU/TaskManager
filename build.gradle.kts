@@ -10,6 +10,19 @@ plugins {
 	id ("com.github.johnrengelman.processes") version "0.5.0"
 	id("org.springdoc.openapi-gradle-plugin") version "1.8.0"
 
+	id ("io.sentry.jvm.gradle") version "4.4.1" //для работы Sentry
+
+
+}
+sentry {
+	// Generates a JVM (Java, Kotlin, etc.) source bundle and uploads your source code to Sentry.
+	// This enables source context, allowing you to see your source
+	// code as part of your stack traces in Sentry.
+	includeSourceContext = true
+
+	org = "ivan-3c"
+	projectName = "java-spring-boot"
+	authToken = System.getenv("SENTRY_AUTH_TOKEN")
 }
 
 group = "hexlet.code"
@@ -19,6 +32,14 @@ application {
 	mainClass.set("hexlet.code.AppApplication")
 }
 //
+
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+}
+
+
 
 
 repositories {
@@ -40,6 +61,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-validation") //нужна для разного рода валидаций полей сущностей
 	implementation("org.springframework.boot:spring-boot-starter-security") //Секьюрити/хеш пароля..
 	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
+	implementation("io.sentry:sentry-spring-boot-starter-jakarta:7.8.0")//для подключение Sentry для стороннего отлова багов
 
 
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
