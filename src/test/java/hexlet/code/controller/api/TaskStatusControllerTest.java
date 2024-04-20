@@ -1,14 +1,26 @@
 package hexlet.code.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import hexlet.code.dto.taskStatuses.TaskStatusCreateDTO;
+import hexlet.code.mapper.TaskMapper;
+import hexlet.code.mapper.TaskStatusMapper;
+import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
+import hexlet.code.repository.LabelRepository;
+import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
+import hexlet.code.repository.UserRepository;
+import hexlet.code.util.ModelGenerator;
 import net.datafaker.Faker;
 import org.instancio.Instancio;
 import org.instancio.Select;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.task.TaskSchedulingAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -18,9 +30,11 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.HashMap;
 import java.util.Optional;
+import java.util.Set;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,11 +53,44 @@ public class TaskStatusControllerTest {
     private ObjectMapper om;
 
     @Autowired
+    private TaskRepository taskRepository;
+
+    @Autowired
     private TaskStatusRepository taskStatusRepository;
+
+    @Autowired
+    private ModelGenerator modelGenerator;
+
+    private Task testTask;
+    private TaskStatus testTaskStatus;
+
+    @Value("/api/task_statuses")
+    private String url;
+
+    @Autowired
+    private TaskStatusMapper taskStatusMapper;
+
+    @BeforeEach
+    public void setUp() throws Exception {
+
+        testTaskStatus = Instancio.of(modelGenerator.getStatusModel()).create();
+        taskStatusRepository.save(testTaskStatus);
+
+//        testTask = Instancio.of(modelGenerator.getTaskModel()).create();
+//        testTask.setTaskStatus(testTaskStatus);
+
+//        taskRepository.save(testTask);
+
+    }
+    @AfterEach
+    public void clear() {
+        taskRepository.deleteAll();
+        taskStatusRepository.deleteAll();
+    }
 
     @Test
     public void testIndex() throws Exception {
-        var result = mockMvc.perform(get("/api/task_statuses"))
+        var result = mockMvc.perform(get(url).with(jwt()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -52,31 +99,46 @@ public class TaskStatusControllerTest {
     }
 
     @Test
-    public  void testCreate() throws Exception {
-        var data = newTaskStatus();
-        data.setName("Work");
-        taskStatusRepository.save(data);
+    public  void testCreateTaskStatus() throws Exception {
+        var testData = testTaskStatus;
 
-        MockHttpServletRequestBuilder request = post("/api/task_statuses")
+        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testData);
+
+        MockHttpServletRequestBuilder request = post(url).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(data));
+                .content(om.writeValueAsString(dto));
 
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
 
-        Optional<TaskStatus> task = taskStatusRepository.findBySlug(data.getSlug());
+        Optional<TaskStatus> task = taskStatusRepository.findById(testData.getId());
 
         assertThat(task).isNotNull();
-        assertThat(task.get().getName()).isEqualTo(data.getName());
-        assertThat(task.get().getSlug()).isEqualTo(data.getSlug());
-
+        assertThat(task.get().getName()).isEqualTo(testData.getName());
+        assertThat(task.get().getSlug()).isEqualTo(testData.getSlug());
     }
-    @Test
-    public void testShow() throws Exception {
-        var task = newTaskStatus();
-        taskStatusRepository.save(task);
 
-        MockHttpServletRequestBuilder request = get("/api/task_statuses/{id}", task.getId());
+    @Test
+    public  void testCreateTaskStatusWithNotValidSlug() throws Exception {
+        var testData = testTaskStatus;
+
+        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testData);
+        dto.setSlug("");
+
+        MockHttpServletRequestBuilder request = post(url).with(jwt())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(dto));
+
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void testShowTaskStatus() throws Exception {
+        var testData = testTaskStatus;
+        taskStatusRepository.save(testData);
+
+        MockHttpServletRequestBuilder request = get(url + "/{id}", testData.getId()).with(jwt());
 
 
         MvcResult result = mockMvc.perform(request)
@@ -85,52 +147,85 @@ public class TaskStatusControllerTest {
 
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).and(
-                v -> v.node("name").isEqualTo(task.getName()),
-                v -> v.node("slug").isEqualTo(task.getSlug())
+                v -> v.node("name").isEqualTo(testData.getName()),
+                v -> v.node("slug").isEqualTo(testData.getSlug())
         );
     }
 
     @Test
-    public void testUpdate() throws Exception {
-        var task = newTaskStatus();
-        taskStatusRepository.save(task);
+    public void testUpdateTaskStatus() throws Exception {
+        var testData = testTaskStatus;
+        taskStatusRepository.save(testData);
 
-        var data = new HashMap<>();
-        data.put("name", "Work");
-        data.put("slug", "Lazy");
+        testData.setName("Some Name");
+        testData.setSlug("Some Slug");
 
-        var request = put("/api/task_statuses/{id}", task.getId())
+        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testData);
+
+        var request = put(url + "/{id}", testData.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
-                // ObjectMapper конвертирует Map в JSON
-                .content(om.writeValueAsString(data));
+                .content(om.writeValueAsString(dto));
 
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        task = taskStatusRepository.findBySlug(task.getSlug()).get();
-        assertThat(task.getName()).isEqualTo(("Work"));
-        assertThat(task.getSlug()).isEqualTo(("Lazy"));
+        TaskStatus taskStatus = taskStatusRepository.findById(testData.getId()).get();
+
+        assertThat(taskStatus.getName()).isEqualTo(testData.getName());
+        assertThat(taskStatus.getSlug()).isEqualTo(testData.getSlug());
+    }
+
+    @Test
+    public void testUpdateTaskStatusPartial() throws Exception {
+        var testData = testTaskStatus;
+        taskStatusRepository.save(testData);
+
+        testData.setSlug("Some Slug");
+
+        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testData);
+
+        var request = put(url + "/{id}", testData.getId()).with(jwt())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(dto));
+
+        mockMvc.perform(request)
+                .andExpect(status().isOk());
+
+        TaskStatus taskStatus = taskStatusRepository.findById(testData.getId()).get();
+
+        assertThat(taskStatus.getName()).isEqualTo(testData.getName());
+        assertThat(taskStatus.getSlug()).isEqualTo(testData.getSlug());
+    }
+
+    @Test
+    public void testUpdateTaskStatusWithNotValidSlug() throws Exception {
+        var testData = testTaskStatus;
+        taskStatusRepository.save(testData);
+
+        testData.setSlug("");
+
+        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testData);
+
+        var request = put(url + "/{id}", testData.getId()).with(jwt())
+                .contentType(MediaType.APPLICATION_JSON)
+                // ObjectMapper конвертирует Map в JSON
+                .content(om.writeValueAsString(dto));
+
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest());
     }
 
     @Test
     public void testDestroy() throws Exception {
-        var task = newTaskStatus();
-        taskStatusRepository.save(task);
+        var testData = testTaskStatus;
+        taskStatusRepository.save(testData);
 
-        var request = delete("/api/task_statuses/{id}", task.getId());
+        var request = delete(url + "/{id}", testData.getId()).with(jwt());
 
         mockMvc.perform(request)
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
-        assertThat(taskStatusRepository.findBySlug(task.getSlug())).isNotPresent();
-    }
-
-    public TaskStatus newTaskStatus() {
-        return Instancio.of(TaskStatus.class)
-                .ignore(Select.field(TaskStatus::getId))
-                .supply(Select.field(TaskStatus::getName), () -> faker.name())
-                .supply(Select.field(TaskStatus::getSlug), () -> faker.internet().slug())
-                .create();
+        assertThat(taskStatusRepository.findById(testData.getId())).isNotPresent();
     }
 
 }

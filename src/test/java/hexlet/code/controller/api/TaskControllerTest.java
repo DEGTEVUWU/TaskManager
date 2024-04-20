@@ -115,7 +115,7 @@ public class TaskControllerTest {
 
     @Test
     public void testIndex() throws Exception {
-        var result = mockMvc.perform(get("/api/tasks").with(jwt()))
+        var result = mockMvc.perform(get(url).with(jwt()))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -229,7 +229,7 @@ public class TaskControllerTest {
         Task testTaskCreate = testTask;
         TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTaskCreate);
 
-        MockHttpServletRequestBuilder request = post("/api/tasks").with(jwt())
+        MockHttpServletRequestBuilder request = post(url).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(dto));
 
@@ -418,7 +418,7 @@ public class TaskControllerTest {
 ////        testTaskUpdate.setAssignee(null);
 //
 //        TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTaskUpdate);
-//        dto.setAssigneeId(-1L);
+//        dto.setAssigneeId(null);
 //
 //        var request = put(url + "/{id}", testTaskUpdate.getId()).with(jwt())
 //                .contentType(MediaType.APPLICATION_JSON)

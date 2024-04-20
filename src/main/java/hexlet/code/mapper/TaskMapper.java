@@ -15,6 +15,7 @@ import org.mapstruct.*;
 import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,9 +29,11 @@ public abstract class TaskMapper {
 
     @Autowired
     private LabelRepository labelRepository;
+    @Autowired
+    private TaskStatusRepository taskStatusRepository;
 
     @Mapping(source = "assigneeId", target = "assignee")
-    @Mapping(source = "status", target = "taskStatus.slug")
+    @Mapping(source = "status", target = "taskStatus", qualifiedByName = "statusSlugToModel")
     @Mapping(source = "labelIds", target = "labels", qualifiedByName = "labelIdsToModel")
 //    @Mapping(source = "labelIds", target = "labels")
     public abstract Task map(TaskCreateDTO dto);
@@ -50,11 +53,19 @@ public abstract class TaskMapper {
     @Mapping(source = "taskStatus.slug", target = "status")
     @Mapping(source = "labels", target = "labelIds", qualifiedByName = "modelToLabelIds")
     public abstract TaskCreateDTO mapToCreateDTO(Task model);
-//
+
+    @Named("statusSlugToModel")
+    public TaskStatus statusSlugToModel(String slug) {
+        return taskStatusRepository.findBySlug(slug)
+                .orElseThrow();
+    }
+
     @Named("labelIdsToModel")
     public Set<Label> labelIdsToModel(Set<Long> labelIds) {
         if (labelIds == null || labelIds.isEmpty()) {
-            throw new ResourceNotFoundException("LabelIds is null or empty!");
+//            throw new ResourceNotFoundException("LabelIds is null or empty!");
+//            return new HashSet<>();
+            return null;
         } else {
             return labelIds.stream()
                     .map(id -> labelRepository.findById(id).orElseThrow())
@@ -64,7 +75,9 @@ public abstract class TaskMapper {
     @Named("modelToLabelIds")
     public Set<Long> modelToLabelIds(Set<Label> labels) {
         if (labels == null) {
-            throw new ResourceNotFoundException("Labels is null!");
+//            throw new ResourceNotFoundException("Labels is null!");
+//            return new HashSet<>();
+            return null;
         }
         return labels.stream()
                 .map(Label::getId)
