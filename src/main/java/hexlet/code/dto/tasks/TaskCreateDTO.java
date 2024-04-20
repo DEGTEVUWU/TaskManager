@@ -33,6 +33,6 @@ public class TaskCreateDTO {
     @JsonProperty("status")
     private String status;
 
-    @JsonProperty("labels")
-    private Set<Long> labelIds;
+    @JsonProperty("taskLabelIds")
+    private Set<Long> taskLabelIds;
 }

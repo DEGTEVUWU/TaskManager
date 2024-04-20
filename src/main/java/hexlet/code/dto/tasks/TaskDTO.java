@@ -32,6 +32,6 @@ public class TaskDTO {
     @JsonProperty("status")
     private JsonNullable<String> status;
 
-    @JsonProperty("labelIds")
-    private JsonNullable<Set<Long>> labelIds;
+    @JsonProperty("taskLabelIds")
+    private JsonNullable<Set<Long>> taskLabelIds;
 }
