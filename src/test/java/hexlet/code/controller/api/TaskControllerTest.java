@@ -42,12 +42,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TaskControllerTest {
-    //СЕЙЧАС ПРОБЛЕМА В ТЕСТАХ В ТОМ, ЧТО НЕТ АВТОРИЗАЦИИ, НУЖНО ДОБАВИТЬ И ДЕЛАТЬ ТЕСТЫ(КРУД ЗАПРОСЫ) ЧЕРЕЗ АВТОРИЗОВАНРОГО ЮЗЕРА
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private Faker faker;
 
     @Autowired
     private ObjectMapper om;
@@ -60,7 +56,6 @@ public class TaskControllerTest {
     private TaskStatusRepository taskStatusRepository;
     @Autowired
     private LabelRepository labelRepository;
-
 
     @Autowired
     private ModelGenerator modelGenerator;
@@ -82,7 +77,6 @@ public class TaskControllerTest {
         userRepository.save(testUser);
 
         testTaskStatus = Instancio.of(modelGenerator.getStatusModel()).create();
-//        taskStatusRepository.save(testTaskStatus);
 
         testLabel = Instancio.of(modelGenerator.getLabelModel()).create();
         labelRepository.save(testLabel);
@@ -91,8 +85,6 @@ public class TaskControllerTest {
         testTask.setTaskStatus(testTaskStatus);
         testTask.setAssignee(testUser);
 
-//        Set<Label> labels = new HashSet<>();
-//        labels.add(testLabel);
         testTask.setLabels(Set.of(testLabel));
 
 
@@ -222,10 +214,6 @@ public class TaskControllerTest {
 
     @Test
     public  void testCreateTask() throws Exception {
-//        Task newTestTask = Instancio.of(modelGenerator.getTaskModel()).create();
-//        newTestTask.setTaskStatus(testTaskStatus);
-//        newTestTask.setAssignee(testUser);
-//        newTestTask.setLabels(Set.of(testLabel));
         Task testTaskCreate = testTask;
         TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTaskCreate);
 
@@ -253,7 +241,7 @@ public class TaskControllerTest {
         newTestTask.setTaskStatus(null);
         TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTask);
 
-        MockHttpServletRequestBuilder request = post("/api/tasks").with(jwt())
+        MockHttpServletRequestBuilder request = post(url).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(dto));
 
@@ -266,7 +254,7 @@ public class TaskControllerTest {
         newTestTask.setName("");
         TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTask);
 
-        MockHttpServletRequestBuilder request = post("/api/tasks").with(jwt())
+        MockHttpServletRequestBuilder request = post(url).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(dto));
 
@@ -280,7 +268,7 @@ public class TaskControllerTest {
         newTestTask.setAssignee(null);
         TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTask);
 
-        MockHttpServletRequestBuilder request = post("/api/tasks").with(jwt())
+        MockHttpServletRequestBuilder request = post(url).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(dto));
 
@@ -291,14 +279,13 @@ public class TaskControllerTest {
     @Test
     public void testShowTask() throws Exception {
         Task testTaskCreate = testTask;
-//        TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTaskCreate);
         taskRepository.save(testTaskCreate);
 
         MockHttpServletRequestBuilder request = get(url + "/{id}", testTaskCreate.getId()).with(jwt());
 
 
         MvcResult result = mockMvc.perform(request)
-                .andExpect(status().isOk()) // Проверяем, что статус ответа 200 OK
+                .andExpect(status().isOk())
                 .andReturn();
 
         var body = result.getResponse().getContentAsString();
@@ -362,7 +349,6 @@ public class TaskControllerTest {
 
         var request = put(url + "/{id}", testTaskUpdate.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
-                // ObjectMapper конвертирует Map в JSON
                 .content(om.writeValueAsString(dto));
 
         mockMvc.perform(request)
@@ -432,14 +418,12 @@ public class TaskControllerTest {
     @Test
     public void testUpdateTaskWithNotValidLabelId() throws Exception {
         Task testTaskUpdate = testTask;
-//        testTaskUpdate.setAssignee(null);
 
         TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTaskUpdate);
         dto.setLabelIds(Set.of(-1L));
 
         var request = put(url + "/{id}", testTaskUpdate.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
-                // ObjectMapper конвертирует Map в JSON
                 .content(om.writeValueAsString(dto));
 
         mockMvc.perform(request)

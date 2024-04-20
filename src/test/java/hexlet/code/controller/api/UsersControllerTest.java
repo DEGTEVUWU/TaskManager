@@ -52,9 +52,6 @@ public class UsersControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private Faker faker;
-
-    @Autowired
     private ObjectMapper om;
 
     @Autowired
@@ -63,10 +60,6 @@ public class UsersControllerTest {
     @Autowired
     private ModelGenerator modelGenerator;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-//    private Task testTask;
     private User testUser;
 
     @Value("/api/users")
@@ -78,7 +71,6 @@ public class UsersControllerTest {
     @BeforeEach
     public void setUp() throws Exception {
         testUser = Instancio.of(modelGenerator.getUserModel()).create();
-//        userRepository.save(testUser);
 
     }
     @AfterEach
@@ -163,7 +155,7 @@ public class UsersControllerTest {
         MockHttpServletRequestBuilder request = get(url + "/{id}", testData.getId()).with(jwt());
 
         MvcResult result = mockMvc.perform(request)
-                .andExpect(status().isOk()) // Проверяем, что статус ответа 200 OK
+                .andExpect(status().isOk())
                 .andReturn();
 
         var body = result.getResponse().getContentAsString();
@@ -187,7 +179,6 @@ public class UsersControllerTest {
 
         var request = put(url + "/{id}", testData.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
-                // ObjectMapper конвертирует Map в JSON
                 .content(om.writeValueAsString(dto));
 
         mockMvc.perform(request)
@@ -210,7 +201,6 @@ public class UsersControllerTest {
 
         var request = put(url + "/{id}", testData.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
-                // ObjectMapper конвертирует Map в JSON
                 .content(om.writeValueAsString(dto));
 
         mockMvc.perform(request)
@@ -233,7 +223,6 @@ public class UsersControllerTest {
 
         var request = put(url + "/{id}", testData.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
-                // ObjectMapper конвертирует Map в JSON
                 .content(om.writeValueAsString(dto));
 
         mockMvc.perform(request)
@@ -250,7 +239,6 @@ public class UsersControllerTest {
 
         var request = put(url + "/{id}", testData.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
-                // ObjectMapper конвертирует Map в JSON
                 .content(om.writeValueAsString(dto));
 
         mockMvc.perform(request)
@@ -267,7 +255,6 @@ public class UsersControllerTest {
 
         var request = put(url + "/{id}", testData.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
-                // ObjectMapper конвертирует Map в JSON
                 .content(om.writeValueAsString(dto));
 
         mockMvc.perform(request)
@@ -283,7 +270,5 @@ public class UsersControllerTest {
 
         mockMvc.perform(request)
                 .andExpect(status().isNoContent());
-
-//        assertThat(userRepository.findByEmail(testData.getEmail())).isNotPresent();
     }
 }

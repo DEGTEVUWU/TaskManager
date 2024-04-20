@@ -42,12 +42,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TaskStatusControllerTest {
-    //СЕЙЧАС ПРОБЛЕМА В ТЕСТАХ В ТОМ, ЧТО НЕТ АВТОРИЗАЦИИ, НУЖНО ДОБАВИТЬ И ДЕЛАТЬ ТЕСТЫ(КРУД ЗАПРОСЫ) ЧЕРЕЗ АВТОРИЗОВАНРОГО ЮЗЕРА
     @Autowired
     private MockMvc mockMvc;
-
-    @Autowired
-    private Faker faker;
 
     @Autowired
     private ObjectMapper om;
@@ -61,7 +57,6 @@ public class TaskStatusControllerTest {
     @Autowired
     private ModelGenerator modelGenerator;
 
-    private Task testTask;
     private TaskStatus testTaskStatus;
 
     @Value("/api/task_statuses")
@@ -133,7 +128,6 @@ public class TaskStatusControllerTest {
         taskStatusRepository.save(testData);
 
         MockHttpServletRequestBuilder request = get(url + "/{id}", testData.getId()).with(jwt());
-
 
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk()) // Проверяем, что статус ответа 200 OK
