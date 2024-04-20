@@ -6,6 +6,7 @@ import hexlet.code.model.Label;
 import hexlet.code.model.TaskStatus;
 import lombok.Getter;
 import lombok.Setter;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -14,22 +15,23 @@ import java.util.Set;
 @Setter
 public class TaskDTO {
     private Long id;
-    private Long index;
+    private JsonNullable<Long> index;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate createdAt;
 
     @JsonProperty("assignee_id")
-    private Long assigneeId;
+    private JsonNullable<Long> assigneeId;
 
     @JsonProperty("title")
-    private String name;
+    private JsonNullable<String> name;
 
     @JsonProperty("content")
-    private String description;
+    private JsonNullable<String> description;
 
     @JsonProperty("status")
-    private String status;
+    private JsonNullable<String> status;
 
-    private Set<Long> labelIds;
+    @JsonProperty("labelIds")
+    private JsonNullable<Set<Long>> labelIds;
 }

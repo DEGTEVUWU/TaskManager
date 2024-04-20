@@ -15,23 +15,21 @@ import java.util.Set;
 @Getter
 @Setter
 public class TaskUpdateDTO {
-//    @NotNull
     @JsonProperty("assignee_id")
-    private Long assigneeId;
+    private JsonNullable<Long> assigneeId;
 
-//    @NotBlank
+    @NotBlank
     @JsonProperty("title")
-    private String name;
+    private JsonNullable<String> name;
 
-//    @NotBlank
     @JsonProperty("content")
-    private String description;
+    private JsonNullable<String> description;
 
-//    @NotBlank
+    @NotNull
     @JsonProperty("status")
-    private String status;
+    private JsonNullable<String> status;
 
     @JsonProperty("labels")
-    private Set<Long> labelIds;
+    private JsonNullable<Set<Long>> labelIds;
 
 }

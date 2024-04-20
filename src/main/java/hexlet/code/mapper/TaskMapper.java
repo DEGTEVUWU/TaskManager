@@ -3,6 +3,7 @@ package hexlet.code.mapper;
 import hexlet.code.dto.tasks.TaskCreateDTO;
 import hexlet.code.dto.tasks.TaskDTO;
 import hexlet.code.dto.tasks.TaskUpdateDTO;
+import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
@@ -31,25 +32,25 @@ public abstract class TaskMapper {
     @Mapping(source = "assigneeId", target = "assignee")
     @Mapping(source = "status", target = "taskStatus.slug")
     @Mapping(source = "labelIds", target = "labels", qualifiedByName = "labelIdsToModel")
+//    @Mapping(source = "labelIds", target = "labels")
     public abstract Task map(TaskCreateDTO dto);
 
     @Mapping(source = "assignee.id", target = "assigneeId")
     @Mapping(source = "taskStatus.slug", target = "status")
     @Mapping(source = "labels", target = "labelIds", qualifiedByName = "modelToLabelIds")
+//    @Mapping(source = "labels", target = "labelIds")
     public abstract TaskDTO map(Task model);
 
     @Mapping(source = "assigneeId", target = "assignee")
     @Mapping(source = "status", target = "taskStatus.slug")
-//    @Mapping(source = "name", target = "name")
-//    @Mapping(source = "description", target = "description")
-    @Mapping(source = "labelIds", target = "labels")
+    @Mapping(source = "labelIds", target = "labels", qualifiedByName = "labelIdsToModel")
     public abstract void update(TaskUpdateDTO dto, @MappingTarget Task model);
 
-
+//
     @Named("labelIdsToModel")
-    Set<Label> labelIdsToModel(Set<Long> labelIds) {
-        if (labelIds == null) {
-            return null;
+    public Set<Label> labelIdsToModel(Set<Long> labelIds) {
+        if (labelIds == null || labelIds.isEmpty()) {
+            throw new ResourceNotFoundException("LabelIds is null or empty!");
         } else {
             return labelIds.stream()
                     .map(id -> labelRepository.findById(id).orElseThrow())
@@ -57,7 +58,10 @@ public abstract class TaskMapper {
         }
     }
     @Named("modelToLabelIds")
-    Set<Long> modelToLabelIds(Set<Label> labels) {
+    public Set<Long> modelToLabelIds(Set<Label> labels) {
+        if (labels == null) {
+            throw new ResourceNotFoundException("Labels is null!");
+        }
         return labels.stream()
                 .map(Label::getId)
                 .collect(Collectors.toSet());
@@ -66,11 +70,12 @@ public abstract class TaskMapper {
 
 
 //    public Set<Label> toEntity(Set<Long> labelIds) {
-//        if (labelIds == null) {
-//            return null;
+//        if (labelIds == null || labelIds.isEmpty()) {
+//            throw new ResourceNotFoundException("LabelIds is null or empty!");
 //        } else {
 //            return labelIds.stream()
-//                    .map(id -> labelRepository.findById(id).orElseThrow())
+//                    .map(labelId -> labelRepository.findById(labelId)
+//                            .orElseThrow(() -> new ResourceNotFoundException("LabelIds is null!")))
 //                    .collect(Collectors.toSet());
 //        }
 //    }
