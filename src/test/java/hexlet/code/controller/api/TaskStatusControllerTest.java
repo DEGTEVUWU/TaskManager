@@ -72,14 +72,8 @@ public class TaskStatusControllerTest {
 
     @BeforeEach
     public void setUp() throws Exception {
-
         testTaskStatus = Instancio.of(modelGenerator.getStatusModel()).create();
         taskStatusRepository.save(testTaskStatus);
-
-//        testTask = Instancio.of(modelGenerator.getTaskModel()).create();
-//        testTask.setTaskStatus(testTaskStatus);
-
-//        taskRepository.save(testTask);
 
     }
     @AfterEach

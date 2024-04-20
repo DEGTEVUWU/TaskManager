@@ -459,14 +459,4 @@ public class TaskControllerTest {
 
         assertThat(taskRepository.findById(task.getId())).isNotPresent();
     }
-
-//    public Task newTask() {
-//        return Instancio.of(Task.class)
-//                .ignore(Select.field(Task::getId))
-//                .supply(Select.field(Task::getName), () -> faker.name())
-//                .supply(Select.field(Task::getDescription), () -> faker.text())
-//                .supply(Select.field(Task::getIndex), () -> faker.code())
-//                .create();
-//    }
-
 }
