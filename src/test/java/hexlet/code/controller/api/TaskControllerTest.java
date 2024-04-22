@@ -141,7 +141,7 @@ public class TaskControllerTest {
     }
 
     @Test
-    public void testIndexWithStatus () throws Exception {
+    public void testIndexWithStatus() throws Exception {
         var testStatus = testTask.getTaskStatus().getSlug();
         var result = mockMvc.perform(get(url + "?status=" + testStatus).with(jwt()))
                 .andExpect(status().isOk())

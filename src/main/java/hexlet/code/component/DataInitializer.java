@@ -59,7 +59,7 @@ public class DataInitializer implements ApplicationRunner {
                 .forEach(taskStatusRepository::save);
     }
 
-    public final void labelsInitializer() {//метод для первичной инициализации 2 лейблов для задач
+    public final void labelsInitializer() { //метод для первичной инициализации 2 лейблов для задач
         Label label1 = new Label();
         Label label2 = new Label();
 

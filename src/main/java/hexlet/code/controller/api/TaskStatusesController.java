@@ -40,7 +40,8 @@ public class TaskStatusesController {
 
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<TaskStatusDTO> create(@Valid @RequestBody TaskStatusCreateDTO taskStatusData) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<TaskStatusDTO> create(@Valid @RequestBody TaskStatusCreateDTO taskStatusData)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
         TaskStatusDTO taskStatus =  taskStatusService.create(taskStatusData);
         return ResponseEntity.status(HttpStatus.CREATED).body(taskStatus);
     }
