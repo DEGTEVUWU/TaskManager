@@ -39,7 +39,8 @@ public class UsersController {
 
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserCreateDTO userData) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserCreateDTO userData)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
         UserDTO user = userService.create(userData);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }

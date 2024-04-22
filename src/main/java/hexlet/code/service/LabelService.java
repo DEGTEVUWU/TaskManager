@@ -76,8 +76,8 @@ public class LabelService {
             if (tasks.isEmpty()) {
                 labelRepository.deleteById(id);
             } else {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "It is not possible to remove the " +
-                        "label from the id " + id + " , as there are tasks attached to it");
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "It is not possible to remove the "
+                        + "label from the id " + id + " , as there are tasks attached to it");
             }
         }
     }

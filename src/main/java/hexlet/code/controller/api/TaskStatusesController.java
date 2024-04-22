@@ -55,7 +55,8 @@ public class TaskStatusesController {
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<TaskStatusDTO> update(@RequestBody @Valid TaskStatusUpdateDTO taskStatusData, @PathVariable Long id) {
+    public ResponseEntity<TaskStatusDTO> update(@RequestBody @Valid TaskStatusUpdateDTO taskStatusData,
+                                                @PathVariable Long id) {
         TaskStatusDTO taskStatus = taskStatusService.update(taskStatusData, id);
         return ResponseEntity.status(HttpStatus.OK).body(taskStatus);
     }
