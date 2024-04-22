@@ -48,7 +48,7 @@ public class UserService {
             userRepository.save(user);
             var userDTO = userMapper.map(user);
             return userDTO;
-        } catch(NoSuchElementException ex) {
+        } catch (NoSuchElementException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
         }
     }

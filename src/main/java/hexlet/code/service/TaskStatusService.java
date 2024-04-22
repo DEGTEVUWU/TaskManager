@@ -42,7 +42,7 @@ public class TaskStatusService {
             taskStatusRepository.save(taskStatus);
             var taskStatusDTO = taskStatusMapper.map(taskStatus);
             return taskStatusDTO;
-        } catch(NoSuchElementException ex) {
+        } catch (NoSuchElementException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
         }
     }

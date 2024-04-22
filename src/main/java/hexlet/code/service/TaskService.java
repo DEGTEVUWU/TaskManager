@@ -44,7 +44,7 @@ public class TaskService {
             repository.save(task);
             var taskDTO = taskMapper.map(task);
             return taskDTO;
-        } catch(NoSuchElementException ex) {
+        } catch (NoSuchElementException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
         }
     }

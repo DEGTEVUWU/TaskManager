@@ -42,7 +42,7 @@ public class LabelService {
             labelRepository.save(label);
             var labelDTO = labelMapper.map(label);
             return labelDTO;
-        } catch(NoSuchElementException ex) {
+        } catch (NoSuchElementException ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
         }
     }

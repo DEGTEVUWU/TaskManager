@@ -86,5 +86,7 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
-
+tasks.sentryBundleSourcesJava {
+	enabled = System.getenv("SENTRY_AUTH_TOKEN") != null
+}
 tasks.jacocoTestReport { reports { xml.required.set(true) } }

@@ -16,7 +16,7 @@ public class UserCreateDTO {
     @NotBlank
     private String lastName;
 
-    @Column(unique=true)
+    @Column(unique = true)
     @Email
     private String email;
 

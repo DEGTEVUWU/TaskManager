@@ -19,7 +19,7 @@ public class UserUpdateDTO {
     private JsonNullable<String> lastName;
 
     @Email
-    @Column(unique=true)
+    @Column(unique = true)
     private JsonNullable<String> email;
 
     @Size(min = 3)

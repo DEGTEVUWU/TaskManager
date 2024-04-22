@@ -1,15 +1,11 @@
 package hexlet.code.component;
 
-import hexlet.code.dto.users.UserCreateDTO;
-import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.Label;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
-import hexlet.code.service.CustomUserDetailsService;
-import hexlet.code.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -61,8 +57,8 @@ public class DataInitializer implements ApplicationRunner {
                     return taskStatus;
                 })
                 .forEach(taskStatusRepository::save);
-
     }
+
     public final void labelsInitializer() {//метод для первичной инициализации 2 лейблов для задач
         Label label1 = new Label();
         Label label2 = new Label();
