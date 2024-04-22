@@ -20,7 +20,7 @@
 Начальная инцииализация пользователя, нескольких статусов и лейблов для оперативной работы.  
 Добавлена фильтрация по параметрам - имя задачи, исполнитель, статусы и лейблы задачи.  
 
-#### Необходимо для локального подключения: ####  
+### Необходимо для локального подключения: ###
 - [Git installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)  
 - [Java](https://www.oracle.com/java/technologies/downloads)  
 - [Gradle](https://gradle.org/install)
@@ -59,5 +59,5 @@ Password: qwerty
 
 ![image](https://github.com/DEGTEVUWU/java-project-99/assets/148809450/4b1660f7-a80a-44f8-bb3d-739047af1336)
 ![image](https://github.com/DEGTEVUWU/java-project-99/assets/148809450/2774f884-8ca9-41e9-b7cf-c35185435801)
-![image](https://github.com/DEGTEVUWU/java-project-99/assets/148809450/7580929b-e83e-4cd2-8182-6155f0b9a96e)
-![image](https://github.com/DEGTEVUWU/java-project-99/assets/148809450/4b161331-beb5-4fe9-9f7c-e491a850ed8e)
+![image](https://github.com/DEGTEVUWU/java-project-99/assets/148809450/0fee1ca4-bec2-482e-88c1-6e589f92b358)
+![image](https://github.com/DEGTEVUWU/java-project-99/assets/148809450/7d1a10c6-da81-4a95-b7f5-a283bd8db0b8)
