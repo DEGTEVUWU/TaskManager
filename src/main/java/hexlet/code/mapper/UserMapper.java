@@ -4,12 +4,15 @@ import hexlet.code.dto.users.UserCreateDTO;
 import hexlet.code.dto.users.UserDTO;
 import hexlet.code.dto.users.UserUpdateDTO;
 import hexlet.code.model.User;
-import org.aspectj.lang.annotation.Before;
-import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.mapstruct.Mapper;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.Mapping;
+import org.mapstruct.BeforeMapping;
 
 @Mapper(
         uses = { ReferenceMapper.class, JsonNullableMapper.class },
@@ -21,20 +24,11 @@ public abstract class UserMapper {
     @Autowired
     private PasswordEncoder encoder; //полгаю нужно изать после всех мап, чтоб захешировать пароль
 
-    @Autowired
-    private JwtDecoder jwtDecoder;
-
     @Mapping(source = "password", target = "passwordDigest")
     public abstract User map(UserCreateDTO dto);
-
-
     public abstract UserDTO map(User model);
-
     public abstract void update(UserUpdateDTO dto, @MappingTarget User model);
-
     public abstract UserCreateDTO mapToCreateDTO(User model);
-
-//    @Before("mapToCreateDTO")
 
     @BeforeMapping
     public void encryptPassword(UserCreateDTO data) {

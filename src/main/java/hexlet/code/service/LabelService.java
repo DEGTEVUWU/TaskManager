@@ -3,12 +3,8 @@ package hexlet.code.service;
 import hexlet.code.dto.labels.LabelCreateDTO;
 import hexlet.code.dto.labels.LabelDTO;
 import hexlet.code.dto.labels.LabelUpdateDTO;
-import hexlet.code.dto.tasks.TaskCreateDTO;
-import hexlet.code.dto.tasks.TaskDTO;
-import hexlet.code.dto.tasks.TaskUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.LabelMapper;
-import hexlet.code.mapper.TaskMapper;
 import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.repository.LabelRepository;
@@ -84,6 +80,5 @@ public class LabelService {
                         "label from the id " + id + " , as there are tasks attached to it");
             }
         }
-//        repository.deleteById(id);
     }
 }

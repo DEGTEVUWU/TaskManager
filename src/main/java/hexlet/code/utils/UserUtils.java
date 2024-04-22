@@ -13,9 +13,6 @@ public class UserUtils {
     @Autowired
     private UserRepository userRepository;
 
-//    @Autowired
-//    private PostRepository postRepository;
-
     public User getCurrentUser() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {

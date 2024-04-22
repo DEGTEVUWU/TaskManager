@@ -17,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -87,6 +86,5 @@ public class UserService {
                          "user from the id " + id + " , as there are tasks attached to it");
             }
         }
-//        userRepository.deleteById(id);
     }
 }

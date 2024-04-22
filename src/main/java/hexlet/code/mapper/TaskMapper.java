@@ -7,15 +7,17 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
-import hexlet.code.model.User;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskStatusRepository;
-import hexlet.code.repository.UserRepository;
-import org.mapstruct.*;
-import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.mapstruct.Mapper;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -35,13 +37,11 @@ public abstract class TaskMapper {
     @Mapping(source = "assigneeId", target = "assignee")
     @Mapping(source = "status", target = "taskStatus", qualifiedByName = "statusSlugToModel")
     @Mapping(source = "taskLabelIds", target = "labels", qualifiedByName = "labelIdsToModel")
-//    @Mapping(source = "labelIds", target = "labels")
     public abstract Task map(TaskCreateDTO dto);
 
     @Mapping(source = "assignee.id", target = "assigneeId")
     @Mapping(source = "taskStatus.slug", target = "status")
     @Mapping(source = "labels", target = "taskLabelIds", qualifiedByName = "modelToLabelIds")
-//    @Mapping(source = "labels", target = "labelIds")
     public abstract TaskDTO map(Task model);
 
     @Mapping(source = "assigneeId", target = "assignee")
@@ -63,67 +63,18 @@ public abstract class TaskMapper {
     @Named("labelIdsToModel")
     public Set<Label> labelIdsToModel(Set<Long> labelIds) {
         if (labelIds == null || labelIds.isEmpty()) {
-//            throw new ResourceNotFoundException("LabelIds is null or empty!");
-//            return new HashSet<>();
-            return null;
-        } else {
-            return labelIds.stream()
+            throw new ResourceNotFoundException("LabelIds is null or empty!");
+        } return labelIds.stream()
                     .map(id -> labelRepository.findById(id).orElseThrow())
                     .collect(Collectors.toSet());
-        }
     }
     @Named("modelToLabelIds")
     public Set<Long> modelToLabelIds(Set<Label> labels) {
-        if (labels == null) {
-//            throw new ResourceNotFoundException("Labels is null!");
-//            return new HashSet<>();
-            return null;
+        if (labels == null || labels.isEmpty()) {
+            throw new ResourceNotFoundException("Labels is null or empty!");
         }
         return labels.stream()
                 .map(Label::getId)
                 .collect(Collectors.toSet());
     }
-
-
-
-//    public Set<Label> toEntity(Set<Long> labelIds) {
-//        if (labelIds == null || labelIds.isEmpty()) {
-//            throw new ResourceNotFoundException("LabelIds is null or empty!");
-//        } else {
-//            return labelIds.stream()
-//                    .map(labelId -> labelRepository.findById(labelId)
-//                            .orElseThrow(() -> new ResourceNotFoundException("LabelIds is null!")))
-//                    .collect(Collectors.toSet());
-//        }
-//    }
-//    public Set<Long> toDTO(Set<Label> labels) {
-//        return labels.stream()
-//                .map(Label::getId)
-//                .collect(Collectors.toSet());
-//    }
-
-
-
-
-
-//    public TaskStatus toEntity(String slug) {
-//        return taskStatusRepository.findBySlug(slug)
-//                .orElseThrow();
-//    }
-//
-//    public User toEntity(JsonNullable<Long> assigneeId) {
-//        return userRepository.findById(assigneeId.get())
-//                .orElseThrow();
-//    }
-
-
-//    @Named("ModelFromStatusSlug")
-//    TaskStatus ModelFromStatusSlug(String slug) {
-//        return taskStatusRepository.findBySlug(slug).orElse(null);
-//    }
-//
-//    @Named("statusSlugFromModel")
-//    String statusSlugFromModel(TaskStatus status) {
-//        return status.getSlug();
-//    }
 }

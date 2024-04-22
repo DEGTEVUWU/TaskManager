@@ -14,7 +14,7 @@ public class AppApplication {
         SpringApplication.run(AppApplication.class, args);
     }
     @Bean
-    public Faker getFaker() {
+    public static Faker getFaker() {
         return new Faker();
     }
 }

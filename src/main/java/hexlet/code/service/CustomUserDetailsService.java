@@ -1,7 +1,6 @@
 package hexlet.code.service;
 
 import hexlet.code.repository.UserRepository;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,7 +32,6 @@ public class CustomUserDetailsService implements UserDetailsManager {
         user.setEmail(userData.getUsername());
         var hashedPassword = passwordEncoder.encode(userData.getPassword());
         user.setPasswordDigest(hashedPassword);
-//        user.setRole(userData.getAuthorities().toString());
         userRepository.save(user);
     }
 

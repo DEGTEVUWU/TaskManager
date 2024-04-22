@@ -1,10 +1,15 @@
 package hexlet.code.model;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Column;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
-import jdk.jfr.SettingDefinition;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -36,7 +41,7 @@ public class User implements BaseEntity, UserDetails {
 
     @Column(nullable = true)
     private String lastName;
-    // EMAIL
+
     @Column(unique = true)
     @Email
     @ToString.Include
@@ -44,8 +49,6 @@ public class User implements BaseEntity, UserDetails {
 
     @Column(nullable = false)
     private String passwordDigest;
-
-//    private String role;
 
     @OneToMany(mappedBy = "assignee", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Task> tasks = new ArrayList<>();

@@ -1,10 +1,10 @@
 package hexlet.code.config;
 
 import hexlet.code.service.CustomUserDetailsService;
+import hexlet.code.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 
 @EnableGlobalMethodSecurity(
         securedEnabled = true,
@@ -36,7 +35,8 @@ public class SecurityConfig {
     private PasswordEncoder passwordEncoder; //для хеширования пароля бин
 
     @Autowired
-    private CustomUserDetailsService userService; //бин, исп для интеграции с системой аутентификации и регистрации в спринг-секбюрити
+    private CustomUserDetailsService userService; //бин, исп для интеграции
+    // с системой аутентификации и регистрации в спринг-секьюрити
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector)
@@ -55,9 +55,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/task_statuses/**").authenticated()
                         .requestMatchers("api/tasks/**").authenticated()
                         .requestMatchers("api/labels/**").authenticated()
-                        .requestMatchers("/v3/api-docs/**").permitAll() //эти два пути для получения док-ции по API и работы
-                        .requestMatchers("/swagger-ui/**").permitAll() // с swagger(граф отображение нормальное) http://localhost:8080/swagger-ui/index.html
-                        .requestMatchers("/app/**").permitAll()  //путь из офф доки не работает localhost:8080/app/swagger-ui.html
+                        .requestMatchers("/v3/api-docs/**").permitAll() //эти два пути для получения док-ции по API
+                        // и работы
+                        .requestMatchers("/swagger-ui/**").permitAll() // с swagger(граф отображение нормальное)
+                        // http://localhost:8080/swagger-ui/index.html
+                        .requestMatchers("/app/**").permitAll()  //путь из офф доки не работает
+                        // localhost:8080/app/swagger-ui.html
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer((rs) -> rs.jwt((jwt) -> jwt.decoder(jwtDecoder)))

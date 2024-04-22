@@ -330,7 +330,7 @@ public class TaskControllerTest {
         assertThat(task.getAssignee().getId()).isEqualTo((dto.getAssigneeId()));
         assertThat(task.getTaskStatus().getSlug()).isEqualTo((dto.getStatus()));
         assertThat(task.getLabels().stream().map(Label::getId).collect(Collectors.toSet()))
-                .isEqualTo((dto.getLabelIds()));
+                .isEqualTo((dto.getTaskLabelIds()));
 
     }
 
@@ -420,7 +420,7 @@ public class TaskControllerTest {
         Task testTaskUpdate = testTask;
 
         TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTaskUpdate);
-        dto.setLabelIds(Set.of(-1L));
+        dto.setTaskLabelIds(Set.of(-1L));
 
         var request = put(url + "/{id}", testTaskUpdate.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)

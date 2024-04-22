@@ -2,8 +2,6 @@ package hexlet.code.dto.tasks;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import hexlet.code.model.Label;
-import hexlet.code.model.TaskStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.openapitools.jackson.nullable.JsonNullable;

@@ -1,5 +1,7 @@
 package hexlet.code.component;
 
+import hexlet.code.dto.users.UserCreateDTO;
+import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.Label;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
@@ -7,13 +9,12 @@ import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.CustomUserDetailsService;
-import hexlet.code.service.LabelService;
-import hexlet.code.service.TaskStatusService;
+import hexlet.code.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -22,39 +23,28 @@ import java.util.Map;
 @Component
 @AllArgsConstructor
 public class DataInitializer implements ApplicationRunner {
-
-
     @Autowired
-    private final UserRepository userRepository;
-
-    @Autowired
-    private final CustomUserDetailsService userService;
-
-//    @Autowired
-//    private TaskStatusService taskStatusService;
-
+    private PasswordEncoder passwordEncoder;
     @Autowired
     private TaskStatusRepository taskStatusRepository;
-
     @Autowired
     private LabelRepository labelRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         var email = "hexlet@example.com";
         var userData = new User();
         userData.setEmail(email);
-        userData.setPasswordDigest("qwerty");
-//        userData.setRole("ADMIN");
-        userService.createUser(userData);
+        userData.setPasswordDigest(passwordEncoder.encode("qwerty"));
+        userRepository.save(userData);
+
         taskStatusesInitializer();
         labelsInitializer();
-//        userRepository.save(userData);
-
-
-
     }
-    public void taskStatusesInitializer() { //метод для первичной инициализации 5 статусов для задач
+
+    public final void taskStatusesInitializer() { //метод для первичной инициализации 5 статусов для задач
         Map<String, String> firstStructure = new HashMap<>();
 
         firstStructure.put("Draft", "draft");
@@ -73,7 +63,7 @@ public class DataInitializer implements ApplicationRunner {
                 .forEach(taskStatusRepository::save);
 
     }
-    public void labelsInitializer() {//метод для первичной инициализации 2 лейблов для задач
+    public final void labelsInitializer() {//метод для первичной инициализации 2 лейблов для задач
         Label label1 = new Label();
         Label label2 = new Label();
 

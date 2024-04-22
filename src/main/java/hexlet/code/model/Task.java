@@ -1,7 +1,17 @@
 package hexlet.code.model;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Column;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.FetchType;
+
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -35,7 +45,7 @@ public class Task implements BaseEntity, UserDetails {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-//    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false)
     @ManyToOne
     private User assignee;
 
@@ -44,10 +54,6 @@ public class Task implements BaseEntity, UserDetails {
     @ManyToOne(cascade = CascadeType.ALL)
     private TaskStatus taskStatus;
 
-//    @ManyToMany(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
-//    @JoinTable(name = "task_labels",
-//            joinColumns = @JoinColumn(name = "task_id"),
-//            inverseJoinColumns = @JoinColumn(name = "label_id"))
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Label> labels = new HashSet<>();
 

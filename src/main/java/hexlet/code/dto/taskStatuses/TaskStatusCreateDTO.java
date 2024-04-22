@@ -10,7 +10,6 @@ import lombok.Setter;
 @Setter
 public class TaskStatusCreateDTO {
 
-//    @NotBlank
     @Size(min = 1)
     @Column(unique = true)
     private String name;

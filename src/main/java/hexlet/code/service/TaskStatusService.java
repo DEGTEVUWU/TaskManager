@@ -7,7 +7,6 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskStatusMapper;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
-import hexlet.code.model.User;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +28,6 @@ public class TaskStatusService {
     @Autowired
     private TaskStatusMapper taskStatusMapper;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
-
     public List<TaskStatusDTO> getAll() {
         var taskStatuses = taskStatusRepository.findAll();
         var result = taskStatuses.stream()
@@ -43,7 +39,6 @@ public class TaskStatusService {
     public TaskStatusDTO create(TaskStatusCreateDTO taskStatusData) {
         try {
             TaskStatus taskStatus = taskStatusMapper.map(taskStatusData);
-//            task.set(passwordEncoder.encode(user.getPassword())); //хешируем пароль
             taskStatusRepository.save(taskStatus);
             var taskStatusDTO = taskStatusMapper.map(taskStatus);
             return taskStatusDTO;
@@ -54,7 +49,7 @@ public class TaskStatusService {
 
     public TaskStatusDTO findById(Long id) {
         var taskStatus = taskStatusRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id " + id + " not found!"));
         var taskStatusDTO = taskStatusMapper.map(taskStatus);
         return taskStatusDTO;
     }
@@ -62,7 +57,7 @@ public class TaskStatusService {
     public TaskStatusDTO update(TaskStatusUpdateDTO taskStatusData, Long id) {
         try {
             var taskStatus = taskStatusRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found!"));
+                    .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id " + id + " not found!"));
             taskStatusMapper.update(taskStatusData, taskStatus);
             taskStatusRepository.save(taskStatus);
             var taskStatusDTO = taskStatusMapper.map(taskStatus);
@@ -75,7 +70,7 @@ public class TaskStatusService {
 
     public void delete(Long id) {
         TaskStatus taskStatus = taskStatusRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id " + id + " not found!"));
         if (taskStatus != null) {
             List<Task> tasks = taskRepository.findByTaskStatus(taskStatus);
             if (tasks.isEmpty()) {
@@ -85,6 +80,5 @@ public class TaskStatusService {
                         "user from the id " + id + " , as there are tasks attached to it");
             }
         }
-//        taskStatusRepository.deleteById(id);
     }
 }
