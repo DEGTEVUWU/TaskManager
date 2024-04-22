@@ -149,8 +149,8 @@ public class TaskControllerTest {
 
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).isArray().allSatisfy(element ->
-        assertThatJson(element)
-                .and(v -> v.node("status").asString().contains(testStatus))
+                assertThatJson(element)
+                        .and(v -> v.node("status").asString().contains(testStatus))
         );
     }
 
