@@ -168,7 +168,7 @@ public class TaskControllerTest {
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).isArray().allSatisfy(element ->
                 assertThatJson(element)
-                        .and(v -> v.node("labelIds").isArray().contains(testLabelId))
+                        .and(v -> v.node("taskLabelIds").isArray().contains(testLabelId))
         );
     }
 
@@ -207,7 +207,7 @@ public class TaskControllerTest {
         );
         assertThatJson(body).isArray().allSatisfy(element ->
                 assertThatJson(element)
-                        .and(v -> v.node("labelIds").isArray().contains(testLabelId))
+                        .and(v -> v.node("taskLabelIds").isArray().contains(testLabelId))
         );
     }
 
@@ -294,7 +294,7 @@ public class TaskControllerTest {
                 v -> v.node("index").isEqualTo(testTaskCreate.getIndex()),
                 v -> v.node("status").isEqualTo(testTaskCreate.getTaskStatus().getSlug()),
                 v -> v.node("assignee_id").isEqualTo(testTaskCreate.getAssignee().getId()),
-                v -> v.node("labelIds").isEqualTo(testTaskCreate.getLabels().stream()
+                v -> v.node("taskLabelIds").isEqualTo(testTaskCreate.getLabels().stream()
                         .map(Label::getId).collect(Collectors.toSet()))
         );
     }

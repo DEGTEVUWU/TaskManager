@@ -64,7 +64,8 @@ public abstract class TaskMapper {
     public Set<Label> labelIdsToModel(Set<Long> labelIds) {
         if (labelIds == null || labelIds.isEmpty()) {
             throw new ResourceNotFoundException("LabelIds is null or empty!");
-        } return labelIds.stream()
+        }
+        return labelIds.stream()
                     .map(id -> labelRepository.findById(id).orElseThrow())
                     .collect(Collectors.toSet());
     }
