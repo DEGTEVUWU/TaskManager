@@ -5,4 +5,55 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/5229ff137204bd4e7bf7/maintainability)](https://codeclimate.com/github/DEGTEVUWU/java-project-99/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/5229ff137204bd4e7bf7/test_coverage)](https://codeclimate.com/github/DEGTEVUWU/java-project-99/test_coverage)
 
+## Описание ##
+
+Менеджер задач - финальный проект на площадке Hexlet.
+Представляет собой приложение для создания, отслеживания и манипуляции задачами - назначения на них разных исполнителей, изменения статуса задач и добавления к задачам разных множественных лейблов(аналог категорий).
+Приложение можно использовать, как локально, так и в production-среде. 
+
+### Реализовано ###
+
+Создание нескольких сущностей и полного цикла CRUD-операций для них.
+Реализована связь между полями таблиц по внешнему ключу, как связями OneToMany, так и ManyToMany.
+Возможность и необходимость первичный аутентификации(большинство путей не будут доступны без неё).
+Начальная инцииализация пользователя, нескольких статусов и лейблов для оперативной работы.
+Добавлена фильтрация по параметрам - имя задачи, исполнитель, статусы и лейблы задачи.
+
+#### Необходимо для локального подключения: ####  
+- [Git installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)  
+- [Java](https://www.oracle.com/java/technologies/downloads)  
+- [Gradle](https://gradle.org/install)
+
+### Подключи и используй локально ###
+##### В терминале: #####
+```
+git clone git@github.com:DEGTEVUWU/java-project-99.git
+cd java-project-99
+make run
+```
+##### В браузере: #####
+```
+localhost:8080
+```
+##### Авторизация: #####
+```
+Username: hexlet@example.com
+Password: qwerty
+```
+
+### Использованые технологии ###
+- Фреймворк: Spring Boot
+- Аутентификация: Spring Security
+- Автоматический маппинг: Mapstruct
+- Шаблон проектирования: DTO
+- Внешнее отслеживание ошибок: Sentry
+- Документация по API-приложения: Springdoc Openapi, Swagger
+- Тесты: JUnit 5, Mockwebserver, Datafaker
+- Отчет о тестах: Jacoco
+- Линтер: Checkstyle
+- Базы данных: H2 (внутренняя), PostgreSQL (в продакшн)
+- Развертывание в production: Docker
+- [Задеплоено](https://java-project-99-qqou.onrender.com) на бесплатный сервер от Render
+> Примечание: в данный момент из-за того, что приложение задеплоено на бесплатный тариф на хостинге, оно очень медленно открывается в production среде, локальное использование предпочтительнее 
+
 ### [Посмотреть рабочее приложение](https://java-project-99-qqou.onrender.com) ###
