@@ -1,6 +1,6 @@
 package hexlet.code.config;
 
-import hexlet.code.service.CustomUserDetailsService;
+import hexlet.code.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
@@ -34,7 +35,7 @@ public class SecurityConfig {
     private PasswordEncoder passwordEncoder; //для хеширования пароля бин
 
     @Autowired
-    private CustomUserDetailsService userService; //бин, исп для интеграции
+    private UserService userService; //бин, исп для интеграции
     // с системой аутентификации и регистрации в спринг-секьюрити
 
     @Bean
@@ -42,7 +43,7 @@ public class SecurityConfig {
             throws Exception {
         // По умолчанию все запрещено
         return http
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/login").permitAll()
                         .requestMatchers("/api/pages/*").permitAll()

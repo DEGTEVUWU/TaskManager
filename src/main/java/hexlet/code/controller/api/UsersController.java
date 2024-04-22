@@ -4,10 +4,12 @@ import hexlet.code.dto.users.UserCreateDTO;
 import hexlet.code.dto.users.UserDTO;
 import hexlet.code.dto.users.UserUpdateDTO;
 import hexlet.code.service.UserService;
+import hexlet.code.utils.UserUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -27,6 +29,11 @@ import java.util.List;
 public class UsersController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserUtils userUtils;
+
+    private static final String CHECK_CURRENT_USER = "@userUtils.getCurrentUser().getId() == #id";
 
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
@@ -54,6 +61,7 @@ public class UsersController {
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize(CHECK_CURRENT_USER)
     public ResponseEntity<UserDTO> update(@RequestBody @Valid UserUpdateDTO userData, @PathVariable Long id) {
         UserDTO user = userService.update(userData, id);
         return ResponseEntity.status(HttpStatus.OK).body(user);
@@ -61,6 +69,7 @@ public class UsersController {
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize(CHECK_CURRENT_USER)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
