@@ -19,10 +19,10 @@ start-dist:
 	./build/install/app/bin/app
 
 lint:
-	./gradle checkstyleMain checkstyleTest
+	./gradlew checkstyleMain checkstyleTest
 
 test:
-	./gradle test
+	./gradlew test
 
 reload-classes:
 	./gradlew -t classes
