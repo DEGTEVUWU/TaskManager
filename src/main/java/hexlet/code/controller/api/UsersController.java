@@ -33,7 +33,7 @@ public class UsersController {
     @Autowired
     private UserUtils userUtils;
 
-    private static final String CHECK_CURRENT_USER = "@userUtils.getCurrentUser().getId() == #id";
+    private static final String CURRENT_USER = "@userUtils.getCurrentUser().getId() == #id";
 
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
@@ -61,7 +61,7 @@ public class UsersController {
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize(CHECK_CURRENT_USER)
+    @PreAuthorize(CURRENT_USER)
     public ResponseEntity<UserDTO> update(@RequestBody @Valid UserUpdateDTO userData, @PathVariable Long id) {
         UserDTO user = userService.update(userData, id);
         return ResponseEntity.status(HttpStatus.OK).body(user);
@@ -69,7 +69,7 @@ public class UsersController {
 
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize(CHECK_CURRENT_USER)
+    @PreAuthorize(CURRENT_USER)
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
