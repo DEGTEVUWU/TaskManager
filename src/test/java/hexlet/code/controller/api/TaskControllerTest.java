@@ -2,7 +2,6 @@ package hexlet.code.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.tasks.TaskCreateDTO;
-import hexlet.code.dto.tasks.TaskUpdateDTO;
 import hexlet.code.mapper.TaskMapper;
 import hexlet.code.model.Label;
 import hexlet.code.model.TaskStatus;
@@ -13,9 +12,7 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.util.ModelGenerator;
-import net.datafaker.Faker;
 import org.instancio.Instancio;
-import org.instancio.Select;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,14 +25,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
-import java.util.*;
+import java.util.Set;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.map;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -148,11 +147,11 @@ public class TaskControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-      var body = result.getResponse().getContentAsString();
-      assertThatJson(body).isArray().allSatisfy(element ->
-      assertThatJson(element)
-                        .and(v -> v.node("status").asString().contains(testStatus))
-            );
+        var body = result.getResponse().getContentAsString();
+        assertThatJson(body).isArray().allSatisfy(element ->
+        assertThatJson(element)
+                .and(v -> v.node("status").asString().contains(testStatus))
+        );
     }
 
     @Test
@@ -297,7 +296,7 @@ public class TaskControllerTest {
                 v -> v.node("assignee_id").isEqualTo(testTaskCreate.getAssignee().getId()),
                 v -> v.node("labelIds").isEqualTo(testTaskCreate.getLabels().stream()
                         .map(Label::getId).collect(Collectors.toSet()))
-                );
+        );
     }
 
     @Test
