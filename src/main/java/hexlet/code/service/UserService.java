@@ -89,6 +89,7 @@ public class UserService implements UserDetailsManager {
                         + "user from the id " + id + " , as there are tasks attached to it");
             }
         }
+        userRepository.deleteById(id);
     }
 
     @Override

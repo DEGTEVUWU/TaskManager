@@ -51,7 +51,7 @@ public class Task implements BaseEntity, UserDetails {
 
 
     @JoinColumn(nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private TaskStatus taskStatus;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
