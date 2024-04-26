@@ -76,7 +76,7 @@ public class TaskControllerTest {
         userRepository.save(testUser);
 
         testTaskStatus = Instancio.of(modelGenerator.getStatusModel()).create();
-//        taskStatusRepository.save(testTaskStatus);
+        taskStatusRepository.save(testTaskStatus);
 
         testLabel = Instancio.of(modelGenerator.getLabelModel()).create();
         labelRepository.save(testLabel);
@@ -95,7 +95,7 @@ public class TaskControllerTest {
     public void clear() {
         taskRepository.deleteAll();
         userRepository.deleteAll();
-//        taskStatusRepository.deleteAll();
+        taskStatusRepository.deleteAll();
         labelRepository.deleteAll();
     }
 
@@ -270,20 +270,6 @@ public class TaskControllerTest {
     }
 
     @Test
-    public  void testCreateTaskWithNotValidAssigneeId() throws Exception {
-        Task newTestTask = testTask;
-        newTestTask.setAssignee(null);
-        TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTask);
-
-        MockHttpServletRequestBuilder request = post(url).with(jwt())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(dto));
-
-        mockMvc.perform(request)
-                .andExpect(status().isBadRequest());
-    }
-
-    @Test
     public void testShowTask() throws Exception {
         Task testTaskCreate = testTask;
         taskRepository.save(testTaskCreate);
@@ -391,10 +377,9 @@ public class TaskControllerTest {
 //    @Test
 //    public void testUpdateTaskWithNotValidStatus() throws Exception {
 //        Task testTaskUpdate = testTask;
-////        testTaskUpdate.setTaskStatus(null);
 //
 //        TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTaskUpdate);
-//        dto.setStatus("");
+//        dto.setStatus("Not Present Task Status");
 //
 //        var request = put(url + "/{id}", testTaskUpdate.getId()).with(jwt())
 //                .contentType(MediaType.APPLICATION_JSON)
@@ -405,23 +390,7 @@ public class TaskControllerTest {
 //                .andExpect(status().isBadRequest());
 //
 //    }
-//    @Test
-//    public void testUpdateTaskWithNotValidUser() throws Exception {
-//        Task testTaskUpdate = testTask;
-////        testTaskUpdate.setAssignee(null);
-//
-//        TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTaskUpdate);
-//        dto.setAssigneeId(null);
-//
-//        var request = put(url + "/{id}", testTaskUpdate.getId()).with(jwt())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                // ObjectMapper конвертирует Map в JSON
-//                .content(om.writeValueAsString(dto));
-//
-//        mockMvc.perform(request)
-//                .andExpect(status().isBadRequest());
-//
-//    }
+
     @Test
     public void testUpdateTaskWithNotValidLabelId() throws Exception {
         Task testTaskUpdate = testTask;

@@ -5,7 +5,6 @@ import hexlet.code.dto.taskStatuses.TaskStatusDTO;
 import hexlet.code.dto.taskStatuses.TaskStatusUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskStatusMapper;
-import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
@@ -69,17 +68,17 @@ public class TaskStatusService {
     }
 
     public void delete(Long id) {
-        TaskStatus taskStatus = taskStatusRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id " + id + " not found!"));
-        if (taskStatus != null) {
-            List<Task> tasks = taskRepository.findByTaskStatus(taskStatus);
-            if (tasks == null) {
-                taskStatusRepository.deleteById(id);
-            } else {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "It is not possible to remove the "
-                        + "user from the id " + id + " , as there are tasks attached to it");
-            }
-            taskStatusRepository.deleteById(id);
-        }
+        taskStatusRepository.deleteById(id);
+
+//        TaskStatus taskStatus = taskStatusRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id " + id + " not found!"));
+//        if (taskStatus != null) {
+//            List<Task> tasks = taskRepository.findByTaskStatus(taskStatus);
+//            if (tasks == null) {
+//                taskStatusRepository.deleteById(id);
+//            } else {
+//                throw new ResponseStatusException(HttpStatus.CONFLICT, "It is not possible to remove the "
+//                        + "user from the id " + id + " , as there are tasks attached to it");
+//            }
     }
 }

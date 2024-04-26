@@ -6,7 +6,6 @@ import hexlet.code.dto.labels.LabelUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.LabelMapper;
 import hexlet.code.model.Label;
-import hexlet.code.model.Task;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,17 +68,17 @@ public class LabelService {
     }
 
     public void delete(Long id) {
-        Label label = labelRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Label with id " + id + " not found!"));
-        if (label != null) {
-            List<Task> tasks = taskRepository.findByLabels(label);
-            if (tasks == null) {
-                labelRepository.deleteById(id);
-            } else {
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "It is not possible to remove the "
-                        + "label from the id " + id + " , as there are tasks attached to it");
-            }
-        }
+//        Label label = labelRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("Label with id " + id + " not found!"));
+//        if (label != null) {
+//            List<Task> tasks = taskRepository.findByLabels(label);
+//            if (tasks == null) {
+//                labelRepository.deleteById(id);
+//            } else {
+//                throw new ResponseStatusException(HttpStatus.CONFLICT, "It is not possible to remove the "
+//                        + "label from the id " + id + " , as there are tasks attached to it");
+//            }
+//        }
         labelRepository.deleteById(id);
     }
 }

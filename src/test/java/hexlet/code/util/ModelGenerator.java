@@ -32,7 +32,7 @@ public class ModelGenerator {
                 .ignore(Select.field(Task::getTaskStatus))
                 .ignore(Select.field(Task::getLabels)) //ignore
                 .supply(Select.field(Task::getName), () -> faker.lorem().word())
-                .supply(Select.field(Task::getIndex), () -> faker.number().randomNumber())
+                .supply(Select.field(Task::getIndex), () -> faker.number().randomDigitNotZero())
                 .supply(Select.field(Task::getDescription), () -> faker.lorem().sentence())
                 .toModel();
 

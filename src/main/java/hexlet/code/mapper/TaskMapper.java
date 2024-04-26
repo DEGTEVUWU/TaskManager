@@ -43,22 +43,26 @@ public abstract class TaskMapper {
 
     @Mapping(source = "assigneeId", target = "assignee")
     @Mapping(source = "status", target = "taskStatus", qualifiedByName = "statusSlugToModel")
-    @Mapping(source = "taskLabelIds", target = "labels", qualifiedByName = "labelIdsToModel")
+//    @Mapping(source = "taskLabelIds", target = "labels", qualifiedByName = "labelIdsToModel")
+    @Mapping(source = "taskLabelIds", target = "labels")
     public abstract Task map(TaskCreateDTO dto);
 
     @Mapping(source = "assignee.id", target = "assigneeId")
     @Mapping(source = "taskStatus.slug", target = "status")
     @Mapping(source = "labels", target = "taskLabelIds", qualifiedByName = "modelToLabelIds")
+//    @Mapping(source = "labels", target = "taskLabelIds")
     public abstract TaskDTO map(Task model);
 
     @Mapping(source = "assigneeId", target = "assignee")
     @Mapping(source = "status", target = "taskStatus.slug")
     @Mapping(source = "taskLabelIds", target = "labels", qualifiedByName = "labelIdsToModel")
+//    @Mapping(source = "taskLabelIds", target = "labels")
     public abstract void update(TaskUpdateDTO dto, @MappingTarget Task model);
 
     @Mapping(source = "assignee.id", target = "assigneeId")
     @Mapping(source = "taskStatus.slug", target = "status")
     @Mapping(source = "labels", target = "taskLabelIds", qualifiedByName = "modelToLabelIds")
+//    @Mapping(source = "labels", target = "taskLabelIds")
     public abstract TaskCreateDTO mapToCreateDTO(Task model);
 
     public User toEntity(JsonNullable<Long> assigneeId) {
