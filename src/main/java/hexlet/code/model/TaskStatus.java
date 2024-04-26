@@ -46,17 +46,17 @@ public class TaskStatus implements BaseEntity, UserDetails {
     private LocalDate createdAt;
 
 
-    @OneToMany(mappedBy = "taskStatus", cascade = CascadeType.ALL, orphanRemoval = false)
-    private List<Task> tasks = new ArrayList<>();
-
-    public void addTask(Task task) {
-        tasks.add(task);
-        task.setTaskStatus(this);
-    }
-    public void removeTask(Task task) {
-        tasks.remove(task);
-        task.setTaskStatus(null);
-    }
+//    @OneToMany(mappedBy = "taskStatus", cascade = CascadeType.ALL, orphanRemoval = false)
+//    private List<Task> tasks = new ArrayList<>();
+//
+//    public void addTask(Task task) {
+//        tasks.add(task);
+//        task.setTaskStatus(this);
+//    }
+//    public void removeTask(Task task) {
+//        tasks.remove(task);
+//        task.setTaskStatus(null);
+//    }
 
 
     @Override
