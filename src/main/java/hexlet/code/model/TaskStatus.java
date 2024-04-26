@@ -5,7 +5,6 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Column;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
