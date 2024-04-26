@@ -73,7 +73,7 @@ public class TaskStatusService {
                 .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id " + id + " not found!"));
         if (taskStatus != null) {
             List<Task> tasks = taskRepository.findByTaskStatus(taskStatus);
-            if (tasks.isEmpty()) {
+            if (tasks == null) {
                 taskStatusRepository.deleteById(id);
             } else {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "It is not possible to remove the "

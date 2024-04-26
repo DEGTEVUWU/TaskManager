@@ -11,9 +11,8 @@ import java.util.Set;
 @Getter
 @Setter
 public class TaskCreateDTO {
-    private Long index;
+    private Integer index;
 
-    @NotNull
     @JsonProperty("assignee_id")
     private Long assigneeId;
 

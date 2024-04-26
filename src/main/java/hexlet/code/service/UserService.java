@@ -82,7 +82,7 @@ public class UserService implements UserDetailsManager {
                 .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found!"));
         if (user != null) {
             List<Task> tasks = taskRepository.findByAssignee(user);
-            if (tasks.isEmpty()) {
+            if (tasks == null) {
                 taskRepository.deleteById(id);
             } else {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "It is not possible to remove the "

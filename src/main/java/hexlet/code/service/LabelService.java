@@ -73,7 +73,7 @@ public class LabelService {
                 .orElseThrow(() -> new ResourceNotFoundException("Label with id " + id + " not found!"));
         if (label != null) {
             List<Task> tasks = taskRepository.findByLabels(label);
-            if (tasks.isEmpty()) {
+            if (tasks == null) {
                 labelRepository.deleteById(id);
             } else {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "It is not possible to remove the "

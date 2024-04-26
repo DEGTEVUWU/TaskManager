@@ -16,13 +16,9 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -32,7 +28,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Getter
 @Table(name = "tasks")
 @EntityListeners(AuditingEntityListener.class)
-public class Task implements BaseEntity, UserDetails {
+public class Task implements BaseEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -40,18 +36,18 @@ public class Task implements BaseEntity, UserDetails {
 
     private String name;
 
-    private Long index;
+    private Integer index;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = true)
     @ManyToOne
     private User assignee;
 
-
     @JoinColumn(nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
     private TaskStatus taskStatus;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
@@ -69,38 +65,38 @@ public class Task implements BaseEntity, UserDetails {
     @CreatedDate
     private LocalDate createdAt;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public String getPassword() {
-        return "";
-    }
-
-    @Override
-    public String getUsername() {
-        return "";
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        return List.of();
+//    }
+//
+//    @Override
+//    public String getPassword() {
+//        return "";
+//    }
+//
+//    @Override
+//    public String getUsername() {
+//        return "";
+//    }
+//
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean isEnabled() {
+//        return false;
+//    }
 }
