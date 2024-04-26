@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Column;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,10 +34,12 @@ public class TaskStatus implements BaseEntity, UserDetails {
     private Long id;
 
     @Size(min = 1)
+    @NotBlank
     private String name;
 
-    @Column(nullable = false)
+    //    @Column(nullable = false)
     @Size(min = 1)
+    @NotBlank
     private String slug;
 
     @CreatedDate

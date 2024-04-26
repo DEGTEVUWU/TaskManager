@@ -80,5 +80,6 @@ public class LabelService {
                         + "label from the id " + id + " , as there are tasks attached to it");
             }
         }
+        labelRepository.deleteById(id);
     }
 }
