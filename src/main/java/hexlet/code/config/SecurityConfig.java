@@ -17,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @EnableGlobalMethodSecurity(
@@ -41,33 +42,21 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, HandlerMappingIntrospector introspector)
             throws Exception {
-        // По умолчанию все запрещено
+        MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
         return http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/login").permitAll()
-                        .requestMatchers("/api/pages/*").permitAll()
-                        .requestMatchers("/api/pages").permitAll()
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/index.html").permitAll()
-                        .requestMatchers("/assets/**").permitAll()
-                        .requestMatchers("/api/users/**").authenticated()
-                        .requestMatchers("/api/task_statuses/**").authenticated()
-                        .requestMatchers("api/tasks/**").authenticated()
-                        .requestMatchers("api/labels/**").authenticated()
-                        .requestMatchers("/v3/api-docs/**").permitAll() //эти два пути для получения док-ции по API
-                        // и работы
-                        .requestMatchers("/swagger-ui/**").permitAll() // с swagger(граф отображение нормальное)
-                        // http://localhost:8080/swagger-ui/index.html
-                        .requestMatchers("/app/**").permitAll()  //путь из офф доки не работает
-                        // localhost:8080/app/swagger-ui.html
+                        .requestMatchers(mvcMatcherBuilder.pattern("/api/login")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/index.html")).permitAll()
+                        .requestMatchers(mvcMatcherBuilder.pattern("/assets/**")).permitAll()
+                        // .requestMatchers(mvcMatcherBuilder.pattern("/api/**")).permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer((rs) -> rs.jwt((jwt) -> jwt.decoder(jwtDecoder)))
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
-
 
 
     @Bean
