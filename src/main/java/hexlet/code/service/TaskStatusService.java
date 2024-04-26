@@ -79,6 +79,7 @@ public class TaskStatusService {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "It is not possible to remove the "
                         + "user from the id " + id + " , as there are tasks attached to it");
             }
+            taskStatusRepository.deleteById(id);
         }
     }
 }
