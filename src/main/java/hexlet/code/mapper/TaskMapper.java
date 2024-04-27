@@ -7,11 +7,8 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
-import hexlet.code.model.User;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskStatusRepository;
-import hexlet.code.repository.UserRepository;
-import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -32,43 +29,36 @@ import java.util.stream.Collectors;
 )
 public abstract class TaskMapper {
 
-    private JsonNullable jsonNullable;
-
     @Autowired
     private LabelRepository labelRepository;
     @Autowired
     private TaskStatusRepository taskStatusRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     @Mapping(source = "assigneeId", target = "assignee")
     @Mapping(source = "status", target = "taskStatus", qualifiedByName = "statusSlugToModel")
-//    @Mapping(source = "taskLabelIds", target = "labels", qualifiedByName = "labelIdsToModel")
     @Mapping(source = "taskLabelIds", target = "labels")
     public abstract Task map(TaskCreateDTO dto);
 
     @Mapping(source = "assignee.id", target = "assigneeId")
     @Mapping(source = "taskStatus.slug", target = "status")
     @Mapping(source = "labels", target = "taskLabelIds", qualifiedByName = "modelToLabelIds")
-//    @Mapping(source = "labels", target = "taskLabelIds")
     public abstract TaskDTO map(Task model);
 
     @Mapping(source = "assigneeId", target = "assignee")
-    @Mapping(source = "status", target = "taskStatus.slug")
+    @Mapping(source = "status", target = "taskStatus", qualifiedByName = "statusSlugToModel")
     @Mapping(source = "taskLabelIds", target = "labels", qualifiedByName = "labelIdsToModel")
-//    @Mapping(source = "taskLabelIds", target = "labels")
     public abstract void update(TaskUpdateDTO dto, @MappingTarget Task model);
 
     @Mapping(source = "assignee.id", target = "assigneeId")
     @Mapping(source = "taskStatus.slug", target = "status")
     @Mapping(source = "labels", target = "taskLabelIds", qualifiedByName = "modelToLabelIds")
-//    @Mapping(source = "labels", target = "taskLabelIds")
-    public abstract TaskCreateDTO mapToCreateDTO(Task model);
+    public abstract TaskCreateDTO mapToCreateDTO(Task model); //метод нужен для тестов, для создания из модели
+    // дто-класса-создания сущности
 
-    public User toEntity(JsonNullable<Long> assigneeId) {
-        return userRepository.findById(assigneeId.get())
-                .orElseThrow();
-    }
+//    public User toEntity(JsonNullable<Long> assigneeId) {
+//        return userRepository.findById(assigneeId.get())
+//                .orElseThrow();
+//    }
 
     @Named("statusSlugToModel")
     public TaskStatus statusSlugToModel(String slug) {

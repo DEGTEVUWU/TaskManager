@@ -41,26 +41,15 @@ public class Task implements BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @JoinColumn(nullable = true)
     @ManyToOne
     private User assignee;
 
     @JoinColumn(nullable = false)
-//    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @ManyToOne
     private TaskStatus taskStatus;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Set<Label> labels = new HashSet<>();
-
-//    public void addLabel(Label label) {
-//        labels.add(label);
-//        label.getTasks().add(this);
-//    }
-//    public void removeLabel(Label label) {
-//        labels.remove(label);
-//        label.getTasks().remove(this);
-//    }
 
     @CreatedDate
     private LocalDate createdAt;

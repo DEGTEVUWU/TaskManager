@@ -25,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -212,36 +213,30 @@ public class TaskControllerTest {
         );
     }
 
-//    @Test
-//    public  void testCreateTask() throws Exception {
-//        Task testTaskCreate = testTask;
-////        TaskStatus status = Instancio.of(modelGenerator.getStatusModel()).create();
-//        TaskStatus status = new TaskStatus();
-//        status.setName("Task Status");
-//        status.setSlug("Task status slug");
-//
-//        testTaskCreate.setTaskStatus(status);
-//
-//        TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTaskCreate);
-//
-//        MockHttpServletRequestBuilder request = post(url).with(jwt())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(om.writeValueAsString(dto));
-//
-//        mockMvc.perform(request)
-//                .andExpect(status().isCreated());
-//
-//        Optional<Task> task = taskRepository.findById(testTaskCreate.getId());
-//
-//        assertThat(task).isNotNull();
-//        assertThat(task.get().getName()).isEqualTo(testTaskCreate.getName());
-//        assertThat(task.get().getDescription()).isEqualTo(testTaskCreate.getDescription());
-//        assertThat(task.get().getIndex()).isEqualTo(testTaskCreate.getIndex());
-//        assertThat(task.get().getTaskStatus().getSlug()).isEqualTo(testTaskCreate.getTaskStatus().getSlug());
-//        assertThat(task.get().getAssignee().getFirstName()).isEqualTo(testTaskCreate.getAssignee().getFirstName());
-//        assertThat(task.get().getLabels().stream().map(Label::getId).collect(Collectors.toSet()))
-//                .isEqualTo(testTaskCreate.getLabels().stream().map(Label::getId).collect(Collectors.toSet()));
-//    }
+    @Test
+    public  void testCreateTask() throws Exception {
+        Task testTaskCreate = testTask;
+
+        TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTaskCreate);
+
+        MockHttpServletRequestBuilder request = post(url).with(jwt())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(dto));
+
+        mockMvc.perform(request)
+                .andExpect(status().isCreated());
+
+        Optional<Task> task = taskRepository.findById(testTaskCreate.getId());
+
+        assertThat(task).isNotNull();
+        assertThat(task.get().getName()).isEqualTo(testTaskCreate.getName());
+        assertThat(task.get().getDescription()).isEqualTo(testTaskCreate.getDescription());
+        assertThat(task.get().getIndex()).isEqualTo(testTaskCreate.getIndex());
+        assertThat(task.get().getTaskStatus().getSlug()).isEqualTo(testTaskCreate.getTaskStatus().getSlug());
+        assertThat(task.get().getAssignee().getFirstName()).isEqualTo(testTaskCreate.getAssignee().getFirstName());
+        assertThat(task.get().getLabels().stream().map(Label::getId).collect(Collectors.toSet()))
+                .isEqualTo(testTaskCreate.getLabels().stream().map(Label::getId).collect(Collectors.toSet()));
+    }
     @Test
     public  void testCreateTaskWithNotValidStatus() throws Exception {
         Task newTestTask = testTask;
@@ -309,7 +304,6 @@ public class TaskControllerTest {
 
         var request = put(url + "/{id}", testTaskUpdate.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
-                // ObjectMapper конвертирует Map в JSON
                 .content(om.writeValueAsString(dto));
 
         mockMvc.perform(request)
@@ -324,7 +318,6 @@ public class TaskControllerTest {
         assertThat(task.getTaskStatus().getSlug()).isEqualTo((dto.getStatus()));
         assertThat(task.getLabels().stream().map(Label::getId).collect(Collectors.toSet()))
                 .isEqualTo((dto.getTaskLabelIds()));
-
     }
 
     @Test
@@ -374,22 +367,20 @@ public class TaskControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isBadRequest());
     }
-//    @Test
-//    public void testUpdateTaskWithNotValidStatus() throws Exception {
-//        Task testTaskUpdate = testTask;
-//
-//        TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTaskUpdate);
-//        dto.setStatus("Not Present Task Status");
-//
-//        var request = put(url + "/{id}", testTaskUpdate.getId()).with(jwt())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                // ObjectMapper конвертирует Map в JSON
-//                .content(om.writeValueAsString(dto));
-//
-//        mockMvc.perform(request)
-//                .andExpect(status().isBadRequest());
-//
-//    }
+    @Test
+    public void testUpdateTaskWithNotValidStatus() throws Exception {
+        Task testTaskUpdate = testTask;
+
+        TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTaskUpdate);
+        dto.setStatus("Not Present Task Status");
+
+        var request = put(url + "/{id}", testTaskUpdate.getId()).with(jwt())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(dto));
+
+        mockMvc.perform(request)
+                .andExpect(status().isBadRequest());
+    }
 
     @Test
     public void testUpdateTaskWithNotValidLabelId() throws Exception {
