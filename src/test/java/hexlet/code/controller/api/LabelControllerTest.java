@@ -74,8 +74,7 @@ public class LabelControllerTest {
 
     @Test
     public  void testCreateLabel() throws Exception {
-        Label testData = testLabel;
-        LabelCreateDTO dto = labelMapper.mapToCreateDTO(testData);
+        LabelCreateDTO dto = labelMapper.mapToCreateDTO(testLabel);
 
         MockHttpServletRequestBuilder request = post(url).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -84,17 +83,16 @@ public class LabelControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
 
-        Optional<Label> label = labelRepository.findByName(testData.getName());
+        Optional<Label> label = labelRepository.findByName(testLabel.getName());
 
         assertThat(label).isNotNull();
-        assertThat(label.get().getName()).isEqualTo(testData.getName());
+        assertThat(label.get().getName()).isEqualTo(testLabel.getName());
     }
 
     @Test
     public  void testCreateLabelWithNotValidName() throws Exception {
-        Label testData = testLabel;
-        testData.setName("");
-        LabelCreateDTO dto = labelMapper.mapToCreateDTO(testData);
+        testLabel.setName("");
+        LabelCreateDTO dto = labelMapper.mapToCreateDTO(testLabel);
 
         MockHttpServletRequestBuilder request = post(url).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -106,11 +104,9 @@ public class LabelControllerTest {
 
     @Test
     public void testShowLabel() throws Exception {
-        var testData = testLabel;
-        labelRepository.save(testData);
+        labelRepository.save(testLabel);
 
-        MockHttpServletRequestBuilder request = get(url + "/{id}", testData.getId()).with(jwt());
-
+        MockHttpServletRequestBuilder request = get(url + "/{id}", testLabel.getId()).with(jwt());
 
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk())
@@ -118,40 +114,38 @@ public class LabelControllerTest {
 
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).and(
-                v -> v.node("name").isEqualTo(testData.getName())
+                v -> v.node("name").isEqualTo(testLabel.getName())
         );
     }
 
     @Test
     public void testUpdateLabel() throws Exception {
-        var testData = testLabel;
-        labelRepository.save(testData);
+        labelRepository.save(testLabel);
 
-        testData.setName("New name");
+        testLabel.setName("New name");
 
-        LabelCreateDTO dto = labelMapper.mapToCreateDTO(testData);
+        LabelCreateDTO dto = labelMapper.mapToCreateDTO(testLabel);
 
-        var request = put(url + "/{id}", testData.getId()).with(jwt())
+        var request = put(url + "/{id}", testLabel.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(dto));
 
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        var label = labelRepository.findByName(testData.getName()).get();
-        assertThat(label.getName()).isEqualTo(testData.getName());
+        var label = labelRepository.findByName(testLabel.getName()).get();
+        assertThat(label.getName()).isEqualTo(testLabel.getName());
     }
 
     @Test
     public void testUpdateLabelWithNotValidName() throws Exception {
-        var testData = testLabel;
-        labelRepository.save(testData);
+        labelRepository.save(testLabel);
 
-        testData.setName("1");
+        testLabel.setName("1");
 
-        LabelCreateDTO dto = labelMapper.mapToCreateDTO(testData);
+        LabelCreateDTO dto = labelMapper.mapToCreateDTO(testLabel);
 
-        var request = put(url + "/{id}", testData.getId()).with(jwt())
+        var request = put(url + "/{id}", testLabel.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(dto));
 
@@ -161,14 +155,13 @@ public class LabelControllerTest {
 
     @Test
     public void testDestroy() throws Exception {
-        var testData = testLabel;
-        labelRepository.save(testData);
+        labelRepository.save(testLabel);
 
-        var request = delete(url + "/{id}", testData.getId()).with(jwt());
+        var request = delete(url + "/{id}", testLabel.getId()).with(jwt());
 
         mockMvc.perform(request)
                 .andExpect(status().isNoContent());
 
-        assertThat(labelRepository.findByName(testData.getName())).isNotPresent();
+        assertThat(labelRepository.findByName(testLabel.getName())).isNotPresent();
     }
 }

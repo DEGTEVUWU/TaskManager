@@ -81,9 +81,7 @@ public class TaskStatusControllerTest {
 
     @Test
     public  void testCreateTaskStatus() throws Exception {
-        var testData = testTaskStatus;
-
-        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testData);
+        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testTaskStatus);
 
         MockHttpServletRequestBuilder request = post(url).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -92,18 +90,16 @@ public class TaskStatusControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
 
-        Optional<TaskStatus> task = taskStatusRepository.findById(testData.getId());
+        Optional<TaskStatus> task = taskStatusRepository.findById(testTaskStatus.getId());
 
         assertThat(task).isNotNull();
-        assertThat(task.get().getName()).isEqualTo(testData.getName());
-        assertThat(task.get().getSlug()).isEqualTo(testData.getSlug());
+        assertThat(task.get().getName()).isEqualTo(testTaskStatus.getName());
+        assertThat(task.get().getSlug()).isEqualTo(testTaskStatus.getSlug());
     }
 
     @Test
     public  void testCreateTaskStatusWithNotValidSlug() throws Exception {
-        var testData = testTaskStatus;
-
-        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testData);
+        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testTaskStatus);
         dto.setSlug("");
 
         MockHttpServletRequestBuilder request = post(url).with(jwt())
@@ -116,10 +112,7 @@ public class TaskStatusControllerTest {
 
     @Test
     public void testShowTaskStatus() throws Exception {
-        var testData = testTaskStatus;
-        taskStatusRepository.save(testData);
-
-        MockHttpServletRequestBuilder request = get(url + "/{id}", testData.getId()).with(jwt());
+        MockHttpServletRequestBuilder request = get(url + "/{id}", testTaskStatus.getId()).with(jwt());
 
         MvcResult result = mockMvc.perform(request)
                 .andExpect(status().isOk()) // Проверяем, что статус ответа 200 OK
@@ -127,66 +120,57 @@ public class TaskStatusControllerTest {
 
         var body = result.getResponse().getContentAsString();
         assertThatJson(body).and(
-                v -> v.node("name").isEqualTo(testData.getName()),
-                v -> v.node("slug").isEqualTo(testData.getSlug())
+                v -> v.node("name").isEqualTo(testTaskStatus.getName()),
+                v -> v.node("slug").isEqualTo(testTaskStatus.getSlug())
         );
     }
 
     @Test
     public void testUpdateTaskStatus() throws Exception {
-        var testData = testTaskStatus;
-        taskStatusRepository.save(testData);
+        testTaskStatus.setName("Some Name");
+        testTaskStatus.setSlug("Some Slug");
 
-        testData.setName("Some Name");
-        testData.setSlug("Some Slug");
+        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testTaskStatus);
 
-        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testData);
-
-        var request = put(url + "/{id}", testData.getId()).with(jwt())
+        var request = put(url + "/{id}", testTaskStatus.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(dto));
 
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        TaskStatus taskStatus = taskStatusRepository.findById(testData.getId()).get();
+        TaskStatus taskStatus = taskStatusRepository.findById(testTaskStatus.getId()).get();
 
-        assertThat(taskStatus.getName()).isEqualTo(testData.getName());
-        assertThat(taskStatus.getSlug()).isEqualTo(testData.getSlug());
+        assertThat(taskStatus.getName()).isEqualTo(testTaskStatus.getName());
+        assertThat(taskStatus.getSlug()).isEqualTo(testTaskStatus.getSlug());
     }
 
     @Test
     public void testUpdateTaskStatusPartial() throws Exception {
-        var testData = testTaskStatus;
-        taskStatusRepository.save(testData);
+        testTaskStatus.setSlug("Some Slug");
 
-        testData.setSlug("Some Slug");
+        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testTaskStatus);
 
-        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testData);
-
-        var request = put(url + "/{id}", testData.getId()).with(jwt())
+        var request = put(url + "/{id}", testTaskStatus.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(dto));
 
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        TaskStatus taskStatus = taskStatusRepository.findById(testData.getId()).get();
+        TaskStatus taskStatus = taskStatusRepository.findById(testTaskStatus.getId()).get();
 
-        assertThat(taskStatus.getName()).isEqualTo(testData.getName());
-        assertThat(taskStatus.getSlug()).isEqualTo(testData.getSlug());
+        assertThat(taskStatus.getName()).isEqualTo(testTaskStatus.getName());
+        assertThat(taskStatus.getSlug()).isEqualTo(testTaskStatus.getSlug());
     }
 
     @Test
     public void testUpdateTaskStatusWithNotValidSlug() throws Exception {
-        var testData = testTaskStatus;
-        taskStatusRepository.save(testData);
+        testTaskStatus.setSlug("");
 
-        testData.setSlug("");
+        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testTaskStatus);
 
-        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testData);
-
-        var request = put(url + "/{id}", testData.getId()).with(jwt())
+        var request = put(url + "/{id}", testTaskStatus.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 // ObjectMapper конвертирует Map в JSON
                 .content(om.writeValueAsString(dto));
@@ -197,15 +181,12 @@ public class TaskStatusControllerTest {
 
     @Test
     public void testDestroy() throws Exception {
-        var testData = testTaskStatus;
-        taskStatusRepository.save(testData);
-
-        var request = delete(url + "/{id}", testData.getId()).with(jwt());
+        var request = delete(url + "/{id}", testTaskStatus.getId()).with(jwt());
 
         mockMvc.perform(request)
                 .andExpect(status().isNoContent());
 
-        assertThat(taskStatusRepository.findById(testData.getId())).isNotPresent();
+        assertThat(taskStatusRepository.findById(testTaskStatus.getId())).isNotPresent();
     }
 
 }
