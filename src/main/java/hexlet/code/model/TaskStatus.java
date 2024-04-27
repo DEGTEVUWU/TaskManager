@@ -32,60 +32,10 @@ public class TaskStatus implements BaseEntity {
     @NotBlank
     private String name;
 
-    //    @Column(nullable = false)
     @Size(min = 1)
     @NotBlank
     private String slug;
 
     @CreatedDate
     private LocalDate createdAt;
-
-
-//    @OneToMany(mappedBy = "taskStatus", cascade = CascadeType.ALL, orphanRemoval = false)
-//    private List<Task> tasks = new ArrayList<>();
-//
-//    public void addTask(Task task) {
-//        tasks.add(task);
-//        task.setTaskStatus(this);
-//    }
-//    public void removeTask(Task task) {
-//        tasks.remove(task);
-//        task.setTaskStatus(null);
-//    }
-
-
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return List.of();
-//    }
-//
-//    @Override
-//    public String getPassword() {
-//        return "";
-//    }
-//
-//    @Override
-//    public String getUsername() {
-//        return "";
-//    }
-//
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return false;
-//    }
 }

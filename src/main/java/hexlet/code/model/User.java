@@ -33,10 +33,8 @@ public class User implements BaseEntity, UserDetails {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Column(nullable = true)
     private String firstName;
 
-    @Column(nullable = true)
     private String lastName;
 
     @Column(unique = true)
@@ -46,18 +44,6 @@ public class User implements BaseEntity, UserDetails {
 
     @Column(nullable = false)
     private String passwordDigest;
-
-//    @OneToMany(mappedBy = "assignee", cascade = CascadeType.ALL, orphanRemoval = false)
-//    private List<Task> tasks = new ArrayList<>();
-//
-//    public void addTask(Task task) {
-//        tasks.add(task);
-//        task.setAssignee(this);
-//    }
-//    public void removeTask(Task task) {
-//        tasks.remove(task);
-//        task.setAssignee(null);
-//    }
 
     @CreatedDate
     private LocalDate createdAt;

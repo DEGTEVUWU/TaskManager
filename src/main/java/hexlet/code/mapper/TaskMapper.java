@@ -55,11 +55,6 @@ public abstract class TaskMapper {
     public abstract TaskCreateDTO mapToCreateDTO(Task model); //метод нужен для тестов, для создания из модели
     // дто-класса-создания сущности
 
-//    public User toEntity(JsonNullable<Long> assigneeId) {
-//        return userRepository.findById(assigneeId.get())
-//                .orElseThrow();
-//    }
-
     @Named("statusSlugToModel")
     public TaskStatus statusSlugToModel(String slug) {
         return taskStatusRepository.findBySlug(slug)

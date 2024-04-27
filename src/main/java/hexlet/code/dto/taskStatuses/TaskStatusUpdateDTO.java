@@ -12,7 +12,6 @@ public class TaskStatusUpdateDTO {
     @Size(min = 1)
     private JsonNullable<String> name;
 
-//    @NotBlank
     @Size(min = 1)
     private JsonNullable<String> slug;
 }

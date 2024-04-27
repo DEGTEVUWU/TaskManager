@@ -77,17 +77,6 @@ public class UserService implements UserDetailsManager {
     }
 
     public void delete(Long id) {
-//        User user = userRepository.findById(id)
-//                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found!"));
-//        if (user != null) {
-//            List<Task> tasks = taskRepository.findByAssignee(user);
-//            if (tasks == null) {
-//                taskRepository.deleteById(id);
-//            } else {
-//                throw new ResponseStatusException(HttpStatus.CONFLICT, "It is not possible to remove the "
-//                        + "user from the id " + id + " , as there are tasks attached to it");
-//            }
-//        }
         userRepository.deleteById(id);
     }
 

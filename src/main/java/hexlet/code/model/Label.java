@@ -37,9 +37,6 @@ public class Label implements BaseEntity {
     @CreatedDate
     private LocalDate createdAt;
 
-//    @ManyToMany(mappedBy = "labels")
-//    private Set<Task> tasks = new HashSet<>();
-
     public Label(String name) {
         this.name = name;
     }
