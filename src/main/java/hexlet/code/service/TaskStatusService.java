@@ -9,12 +9,9 @@ import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -32,10 +29,10 @@ public class TaskStatusService {
     }
 
     public TaskStatusDTO create(TaskStatusCreateDTO taskStatusData) {
-            TaskStatus taskStatus = taskStatusMapper.map(taskStatusData);
-            taskStatusRepository.save(taskStatus);
-            var taskStatusDTO = taskStatusMapper.map(taskStatus);
-            return taskStatusDTO;
+        TaskStatus taskStatus = taskStatusMapper.map(taskStatusData);
+        taskStatusRepository.save(taskStatus);
+        var taskStatusDTO = taskStatusMapper.map(taskStatus);
+        return taskStatusDTO;
     }
 
     public TaskStatusDTO findById(Long id) {
@@ -46,12 +43,12 @@ public class TaskStatusService {
     }
 
     public TaskStatusDTO update(TaskStatusUpdateDTO taskStatusData, Long id) {
-            var taskStatus = taskStatusRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id " + id + " not found!"));
-            taskStatusMapper.update(taskStatusData, taskStatus);
-            taskStatusRepository.save(taskStatus);
-            var taskStatusDTO = taskStatusMapper.map(taskStatus);
-            return taskStatusDTO;
+        var taskStatus = taskStatusRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id " + id + " not found!"));
+        taskStatusMapper.update(taskStatusData, taskStatus);
+        taskStatusRepository.save(taskStatus);
+        var taskStatusDTO = taskStatusMapper.map(taskStatus);
+        return taskStatusDTO;
     }
 
     public void delete(Long id) {

@@ -9,12 +9,9 @@ import hexlet.code.model.Label;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -32,10 +29,10 @@ public class LabelService {
     }
 
     public LabelDTO create(LabelCreateDTO labelData) {
-            Label label = labelMapper.map(labelData);
-            labelRepository.save(label);
-            var labelDTO = labelMapper.map(label);
-            return labelDTO;
+        Label label = labelMapper.map(labelData);
+        labelRepository.save(label);
+        var labelDTO = labelMapper.map(label);
+        return labelDTO;
     }
 
     public LabelDTO findById(Long id) {
@@ -46,13 +43,12 @@ public class LabelService {
     }
 
     public LabelDTO update(LabelUpdateDTO labelData, Long id) {
-
-            var label = labelRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Label with id " + id + " not found!"));
-            labelMapper.update(labelData, label);
-            labelRepository.save(label);
-            var labelDTO = labelMapper.map(label);
-            return labelDTO;
+        var label = labelRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Label with id " + id + " not found!"));
+        labelMapper.update(labelData, label);
+        labelRepository.save(label);
+        var labelDTO = labelMapper.map(label);
+        return labelDTO;
     }
 
     public void delete(Long id) {

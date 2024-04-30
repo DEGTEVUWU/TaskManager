@@ -9,16 +9,13 @@ import hexlet.code.model.User;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -37,11 +34,11 @@ public class UserService implements UserDetailsManager {
     }
 
     public UserDTO create(UserCreateDTO userData) {
-            User user = userMapper.map(userData);
-            user.setPasswordDigest(passwordEncoder.encode(user.getPassword())); //хешируем пароль
-            userRepository.save(user);
-            var userDTO = userMapper.map(user);
-            return userDTO;
+        User user = userMapper.map(userData);
+        user.setPasswordDigest(passwordEncoder.encode(user.getPassword())); //хешируем пароль
+        userRepository.save(user);
+        var userDTO = userMapper.map(user);
+        return userDTO;
     }
 
     public UserDTO findById(Long id) {
@@ -52,12 +49,12 @@ public class UserService implements UserDetailsManager {
     }
 
     public UserDTO update(UserUpdateDTO userData, Long id) {
-            var user = userRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found!"));
-            userMapper.update(userData, user);
-            userRepository.save(user);
-            var userDTO = userMapper.map(user);
-            return userDTO;
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found!"));
+        userMapper.update(userData, user);
+        userRepository.save(user);
+        var userDTO = userMapper.map(user);
+        return userDTO;
     }
 
     public void delete(Long id) {

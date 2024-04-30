@@ -11,12 +11,9 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.specification.TaskSpecification;
 import lombok.AllArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -35,10 +32,10 @@ public class TaskService {
     }
 
     public TaskDTO create(TaskCreateDTO taskData) {
-            Task task = taskMapper.map(taskData);
-            repository.save(task);
-            var taskDTO = taskMapper.map(task);
-            return taskDTO;
+        Task task = taskMapper.map(taskData);
+        repository.save(task);
+        var taskDTO = taskMapper.map(task);
+        return taskDTO;
     }
 
     public TaskDTO findById(Long id) {
@@ -49,12 +46,12 @@ public class TaskService {
     }
 
     public TaskDTO update(TaskUpdateDTO taskData, Long id) {
-            var task = repository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found!"));
-            taskMapper.update(taskData, task);
-            repository.save(task);
-            var taskDTO = taskMapper.map(task);
-            return taskDTO;
+        var task = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found!"));
+        taskMapper.update(taskData, task);
+        repository.save(task);
+        var taskDTO = taskMapper.map(task);
+        return taskDTO;
     }
 
     public void delete(Long id) {

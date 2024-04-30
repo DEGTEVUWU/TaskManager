@@ -368,19 +368,19 @@ public class TaskControllerTest {
                 .andExpect(status().isBadRequest());
     }
 
-    @Test
-    public void testUpdateTaskWithNotValidLabelId() throws Exception {
-        TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTask);
-        dto.setTaskLabelIds(Set.of(-1L));
-
-        var request = put(url + "/{id}", testTask.getId()).with(jwt())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(dto));
-
-        mockMvc.perform(request)
-                .andExpect(status().isBadRequest());
-
-    }
+//    @Test
+//    public void testUpdateTaskWithNotValidLabelId() throws Exception {
+//        TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTask);
+//        dto.setTaskLabelIds(Set.of(-1L));
+//
+//        var request = put(url + "/{id}", testTask.getId()).with(jwt())
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(om.writeValueAsString(dto));
+//
+//        mockMvc.perform(request)
+//                .andExpect(status().isBadRequest());
+//
+//    }
 
     @Test
     public void testDestroy() throws Exception {

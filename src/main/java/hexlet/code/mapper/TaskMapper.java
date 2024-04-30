@@ -18,6 +18,7 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -66,9 +67,7 @@ public abstract class TaskMapper {
         if (labelIds == null || labelIds.isEmpty()) {
             throw new ResourceNotFoundException("LabelIds is null or empty!");
         }
-        return labelIds.stream()
-                    .map(id -> labelRepository.findById(id).orElseThrow())
-                    .collect(Collectors.toSet());
+        return new HashSet<>(labelRepository.findByIdIn(labelIds));
     }
     @Named("modelToLabelIds")
     public Set<Long> modelToLabelIds(Set<Label> labels) {
