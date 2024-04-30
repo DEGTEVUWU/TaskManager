@@ -65,7 +65,7 @@ public class TaskStatusControllerTest {
     }
     @AfterEach
     public void clear() {
-        taskRepository.deleteAll();
+//        taskRepository.deleteAll();
         taskStatusRepository.deleteAll();
     }
 
@@ -81,7 +81,8 @@ public class TaskStatusControllerTest {
 
     @Test
     public  void testCreateTaskStatus() throws Exception {
-        TaskStatusCreateDTO dto = taskStatusMapper.mapToCreateDTO(testTaskStatus);
+        var newTaskStatusModel = Instancio.of(modelGenerator.getStatusModel()).create();
+        var dto = taskStatusMapper.mapToCreateDTO(newTaskStatusModel);
 
         MockHttpServletRequestBuilder request = post(url).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
