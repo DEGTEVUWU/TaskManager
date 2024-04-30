@@ -61,9 +61,9 @@ public class Task implements BaseEntity {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if(this == obj)
             return true;
-        if (obj == null || getClass() != obj.getClass())
+        if(obj == null || getClass() != obj.getClass())
             return false;
         Task other = (Task) obj;
         return Objects.equals(id, other.id);
