@@ -32,14 +32,10 @@ public class TaskStatusService {
     }
 
     public TaskStatusDTO create(TaskStatusCreateDTO taskStatusData) {
-        try {
             TaskStatus taskStatus = taskStatusMapper.map(taskStatusData);
             taskStatusRepository.save(taskStatus);
             var taskStatusDTO = taskStatusMapper.map(taskStatus);
             return taskStatusDTO;
-        } catch (NoSuchElementException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
-        }
     }
 
     public TaskStatusDTO findById(Long id) {
@@ -50,17 +46,12 @@ public class TaskStatusService {
     }
 
     public TaskStatusDTO update(TaskStatusUpdateDTO taskStatusData, Long id) {
-        try {
             var taskStatus = taskStatusRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id " + id + " not found!"));
             taskStatusMapper.update(taskStatusData, taskStatus);
             taskStatusRepository.save(taskStatus);
             var taskStatusDTO = taskStatusMapper.map(taskStatus);
             return taskStatusDTO;
-        } catch (NoSuchElementException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
-
-        }
     }
 
     public void delete(Long id) {

@@ -35,14 +35,10 @@ public class TaskService {
     }
 
     public TaskDTO create(TaskCreateDTO taskData) {
-        try {
             Task task = taskMapper.map(taskData);
             repository.save(task);
             var taskDTO = taskMapper.map(task);
             return taskDTO;
-        } catch (NoSuchElementException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
-        }
     }
 
     public TaskDTO findById(Long id) {
@@ -53,17 +49,12 @@ public class TaskService {
     }
 
     public TaskDTO update(TaskUpdateDTO taskData, Long id) {
-        try {
             var task = repository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Task with id " + id + " not found!"));
             taskMapper.update(taskData, task);
             repository.save(task);
             var taskDTO = taskMapper.map(task);
             return taskDTO;
-        } catch (NoSuchElementException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
-
-        }
     }
 
     public void delete(Long id) {

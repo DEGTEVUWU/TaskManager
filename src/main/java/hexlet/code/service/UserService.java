@@ -37,15 +37,11 @@ public class UserService implements UserDetailsManager {
     }
 
     public UserDTO create(UserCreateDTO userData) {
-        try {
             User user = userMapper.map(userData);
             user.setPasswordDigest(passwordEncoder.encode(user.getPassword())); //хешируем пароль
             userRepository.save(user);
             var userDTO = userMapper.map(user);
             return userDTO;
-        } catch (NoSuchElementException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
-        }
     }
 
     public UserDTO findById(Long id) {
@@ -56,17 +52,12 @@ public class UserService implements UserDetailsManager {
     }
 
     public UserDTO update(UserUpdateDTO userData, Long id) {
-        try {
             var user = userRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " not found!"));
             userMapper.update(userData, user);
             userRepository.save(user);
             var userDTO = userMapper.map(user);
             return userDTO;
-        } catch (NoSuchElementException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
-
-        }
     }
 
     public void delete(Long id) {

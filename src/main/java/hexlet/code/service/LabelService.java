@@ -32,14 +32,10 @@ public class LabelService {
     }
 
     public LabelDTO create(LabelCreateDTO labelData) {
-        try {
             Label label = labelMapper.map(labelData);
             labelRepository.save(label);
             var labelDTO = labelMapper.map(label);
             return labelDTO;
-        } catch (NoSuchElementException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
-        }
     }
 
     public LabelDTO findById(Long id) {
@@ -50,17 +46,13 @@ public class LabelService {
     }
 
     public LabelDTO update(LabelUpdateDTO labelData, Long id) {
-        try {
+
             var label = labelRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("Label with id " + id + " not found!"));
             labelMapper.update(labelData, label);
             labelRepository.save(label);
             var labelDTO = labelMapper.map(label);
             return labelDTO;
-        } catch (NoSuchElementException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
-
-        }
     }
 
     public void delete(Long id) {
