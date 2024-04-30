@@ -2,9 +2,10 @@ package hexlet.code.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
-import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Column;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -30,10 +31,12 @@ public class TaskStatus implements BaseEntity {
 
     @Size(min = 1)
     @NotBlank
+    @Column(unique = true)
     private String name;
 
     @Size(min = 1)
     @NotBlank
+    @Column(unique = true)
     private String slug;
 
     @CreatedDate
