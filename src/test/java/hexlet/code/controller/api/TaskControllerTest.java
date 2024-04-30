@@ -1,5 +1,6 @@
 package hexlet.code.controller.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.tasks.TaskCreateDTO;
 import hexlet.code.mapper.TaskMapper;
@@ -24,7 +25,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -222,15 +225,15 @@ public class TaskControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
 
-        Optional<Task> task = taskRepository.findById(testTask.getId());
+        Task task = taskRepository.findById(testTask.getId()).orElse(new Task());
 
         assertThat(task).isNotNull();
-        assertThat(task.get().getName()).isEqualTo(testTask.getName());
-        assertThat(task.get().getDescription()).isEqualTo(testTask.getDescription());
-        assertThat(task.get().getIndex()).isEqualTo(testTask.getIndex());
-        assertThat(task.get().getTaskStatus().getSlug()).isEqualTo(testTask.getTaskStatus().getSlug());
-        assertThat(task.get().getAssignee().getFirstName()).isEqualTo(testTask.getAssignee().getFirstName());
-        assertThat(task.get().getLabels().stream().map(Label::getId).collect(Collectors.toSet()))
+        assertThat(task.getName()).isEqualTo(testTask.getName());
+        assertThat(task.getDescription()).isEqualTo(testTask.getDescription());
+        assertThat(task.getIndex()).isEqualTo(testTask.getIndex());
+        assertThat(task.getTaskStatus().getSlug()).isEqualTo(testTask.getTaskStatus().getSlug());
+        assertThat(task.getAssignee().getFirstName()).isEqualTo(testTask.getAssignee().getFirstName());
+        assertThat(task.getLabels().stream().map(Label::getId).collect(Collectors.toSet()))
                 .isEqualTo(testTask.getLabels().stream().map(Label::getId).collect(Collectors.toSet()));
     }
     @Test
@@ -300,7 +303,7 @@ public class TaskControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        var task = taskRepository.findById(testTask.getId()).get();
+        Task task = taskRepository.findById(testTask.getId()).orElse(new Task());
 
         assertThat(task.getName()).isEqualTo((dto.getName()));
         assertThat(task.getDescription()).isEqualTo((dto.getDescription()));
@@ -330,7 +333,7 @@ public class TaskControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        var task = taskRepository.findById(testTask.getId()).get();
+        Task task = taskRepository.findById(testTask.getId()).orElse(new Task());
 
         assertThat(task.getName()).isEqualTo((testTask.getName()));
         assertThat(task.getDescription()).isEqualTo((testTask.getDescription()));
@@ -367,20 +370,6 @@ public class TaskControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isBadRequest());
     }
-
-//    @Test
-//    public void testUpdateTaskWithNotValidLabelId() throws Exception {
-//        TaskCreateDTO dto = taskMapper.mapToCreateDTO(testTask);
-//        dto.setTaskLabelIds(Set.of(-1L));
-//
-//        var request = put(url + "/{id}", testTask.getId()).with(jwt())
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(om.writeValueAsString(dto));
-//
-//        mockMvc.perform(request)
-//                .andExpect(status().isBadRequest());
-//
-//    }
 
     @Test
     public void testDestroy() throws Exception {

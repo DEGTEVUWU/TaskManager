@@ -41,9 +41,6 @@ public class TaskStatusControllerTest {
     private ObjectMapper om;
 
     @Autowired
-    private TaskRepository taskRepository;
-
-    @Autowired
     private TaskStatusRepository taskStatusRepository;
 
     @Autowired
@@ -58,14 +55,13 @@ public class TaskStatusControllerTest {
     private TaskStatusMapper taskStatusMapper;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    public void setUp() {
         testTaskStatus = Instancio.of(modelGenerator.getStatusModel()).create();
         taskStatusRepository.save(testTaskStatus);
 
     }
     @AfterEach
     public void clear() {
-//        taskRepository.deleteAll();
         taskStatusRepository.deleteAll();
     }
 
@@ -91,11 +87,11 @@ public class TaskStatusControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
 
-        Optional<TaskStatus> task = taskStatusRepository.findById(testTaskStatus.getId());
+        TaskStatus taskStatus = taskStatusRepository.findById(testTaskStatus.getId()).orElse(new TaskStatus());
 
-        assertThat(task).isNotNull();
-        assertThat(task.get().getName()).isEqualTo(testTaskStatus.getName());
-        assertThat(task.get().getSlug()).isEqualTo(testTaskStatus.getSlug());
+        assertThat(taskStatus).isNotNull();
+        assertThat(taskStatus.getName()).isEqualTo(testTaskStatus.getName());
+        assertThat(taskStatus.getSlug()).isEqualTo(testTaskStatus.getSlug());
     }
 
     @Test
@@ -140,7 +136,7 @@ public class TaskStatusControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        TaskStatus taskStatus = taskStatusRepository.findById(testTaskStatus.getId()).get();
+        TaskStatus taskStatus = taskStatusRepository.findById(testTaskStatus.getId()).orElse(new TaskStatus());
 
         assertThat(taskStatus.getName()).isEqualTo(testTaskStatus.getName());
         assertThat(taskStatus.getSlug()).isEqualTo(testTaskStatus.getSlug());
@@ -159,7 +155,7 @@ public class TaskStatusControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        TaskStatus taskStatus = taskStatusRepository.findById(testTaskStatus.getId()).get();
+        TaskStatus taskStatus = taskStatusRepository.findById(testTaskStatus.getId()).orElse(new TaskStatus());
 
         assertThat(taskStatus.getName()).isEqualTo(testTaskStatus.getName());
         assertThat(taskStatus.getSlug()).isEqualTo(testTaskStatus.getSlug());

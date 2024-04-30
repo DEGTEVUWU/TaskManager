@@ -2,6 +2,7 @@ package hexlet.code.controller.api;
 
 import hexlet.code.dto.users.UserCreateDTO;
 import hexlet.code.mapper.UserMapper;
+import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.util.ModelGenerator;
@@ -91,11 +92,11 @@ public class UsersControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
 
-        Optional<User> user = userRepository.findByEmail(testUser.getEmail());
+        User user = userRepository.findByEmail(testUser.getEmail()).orElse(new User());
 
-        assertThat(user.get().getFirstName()).isEqualTo(testUser.getFirstName());
-        assertThat(user.get().getLastName()).isEqualTo(testUser.getLastName());
-        assertThat(user.get().getEmail()).isEqualTo(testUser.getEmail());
+        assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
+        assertThat(user.getLastName()).isEqualTo(testUser.getLastName());
+        assertThat(user.getEmail()).isEqualTo(testUser.getEmail());
     }
 
     @Test
@@ -170,7 +171,7 @@ public class UsersControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        User user = userRepository.findById(testUser.getId()).get();
+        User user = userRepository.findById(testUser.getId()).orElse(new User());
 
         assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
         assertThat(user.getLastName()).isEqualTo(testUser.getLastName());
@@ -191,7 +192,7 @@ public class UsersControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        User user = userRepository.findById(testUser.getId()).get();
+        User user = userRepository.findById(testUser.getId()).orElse(new User());
 
         assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
         assertThat(user.getLastName()).isEqualTo(testUser.getLastName());

@@ -83,10 +83,10 @@ public class LabelControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
 
-        Optional<Label> label = labelRepository.findByName(testLabel.getName());
+        Label label = labelRepository.findByName(testLabel.getName()).orElse(new Label());
 
         assertThat(label).isNotNull();
-        assertThat(label.get().getName()).isEqualTo(testLabel.getName());
+        assertThat(label.getName()).isEqualTo(testLabel.getName());
     }
 
     @Test
@@ -133,7 +133,8 @@ public class LabelControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        var label = labelRepository.findByName(testLabel.getName()).get();
+        Label label = labelRepository.findByName(testLabel.getName()).orElse(new Label());
+
         assertThat(label.getName()).isEqualTo(testLabel.getName());
     }
 
