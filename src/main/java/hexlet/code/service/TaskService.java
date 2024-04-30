@@ -9,6 +9,7 @@ import hexlet.code.mapper.TaskMapper;
 import hexlet.code.model.Task;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.specification.TaskSpecification;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -19,15 +20,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@AllArgsConstructor
 public class TaskService {
-    @Autowired
-    private TaskRepository repository;
-
-    @Autowired
-    private TaskMapper taskMapper;
-
-    @Autowired
-    private TaskSpecification taskSpecification;
+    private final TaskRepository repository;
+    private final TaskMapper taskMapper;
+    private final TaskSpecification taskSpecification;
 
     public List<TaskDTO> getAll(TaskParamsDTO params) {
         Specification<Task> spec = taskSpecification.build(params);

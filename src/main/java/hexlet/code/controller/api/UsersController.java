@@ -6,6 +6,7 @@ import hexlet.code.dto.users.UserUpdateDTO;
 import hexlet.code.service.UserService;
 import hexlet.code.utils.UserUtils;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,13 +27,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@AllArgsConstructor
 public class UsersController {
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private UserUtils userUtils;
-
+    private final UserService userService;
+    private final UserUtils userUtils;
     private static final String CURRENT_USER = "@userUtils.getCurrentUser().getId() == #id";
 
     @GetMapping(path = "")

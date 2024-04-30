@@ -19,14 +19,11 @@ import java.util.Map;
 @Component
 @AllArgsConstructor
 public class DataInitializer implements ApplicationRunner {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private TaskStatusRepository taskStatusRepository;
-    @Autowired
-    private LabelRepository labelRepository;
-    @Autowired
-    private UserRepository userRepository;
+    //поля - это зависимости во всех классах, где есть конструктор
+    private final PasswordEncoder passwordEncoder;
+    private final TaskStatusRepository taskStatusRepository;
+    private final LabelRepository labelRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void run(ApplicationArguments args) {

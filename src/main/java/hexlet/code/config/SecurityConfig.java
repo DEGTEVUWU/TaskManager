@@ -1,6 +1,7 @@
 package hexlet.code.config;
 
 import hexlet.code.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,16 +28,12 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 //@EnableMethodSecurity
 public class SecurityConfig {
-    @Autowired
-    private JwtDecoder jwtDecoder;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder; //для хеширования пароля бин
-
-    @Autowired
-    private UserService userService; //бин, исп для интеграции
+    private final JwtDecoder jwtDecoder;
+    private final PasswordEncoder passwordEncoder; //для хеширования пароля бин
+    private final UserService userService; //бин, исп для интеграции
     // с системой аутентификации и регистрации в спринг-секьюрити
 
     @Bean

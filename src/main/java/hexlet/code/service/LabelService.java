@@ -8,6 +8,7 @@ import hexlet.code.mapper.LabelMapper;
 import hexlet.code.model.Label;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,15 +18,11 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
+@AllArgsConstructor
 public class LabelService {
-    @Autowired
-    private LabelRepository labelRepository;
-
-    @Autowired
-    private TaskRepository taskRepository;
-
-    @Autowired
-    private LabelMapper labelMapper;
+    private final LabelRepository labelRepository;
+    private final TaskRepository taskRepository;
+    private final LabelMapper labelMapper;
 
     public List<LabelDTO> getAll() {
         List<Label> labels = labelRepository.findAll();
