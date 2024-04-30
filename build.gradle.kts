@@ -1,5 +1,4 @@
 plugins {
-	java
 	application // Плагин для создания исполняемого JAR
 	id("org.springframework.boot") version "3.2.5-SNAPSHOT"
 	id("io.spring.dependency-management") version "1.1.4"
