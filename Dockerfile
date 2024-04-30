@@ -8,8 +8,19 @@ WORKDIR .
 
 COPY . .
 
-RUN ./gradlew --no-daemon dependencies
+RUN gradle installDist
 
-CMD java -jar build/libs/app-0.0.1-SNAPSHOT-plain.jar
+CMD ./build/install/app/bin/app
+
+EXPOSE 8080
 
 #CMD ./build/install/app/bin/app
+
+
+
+
+
+
+
+
+
