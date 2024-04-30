@@ -2,7 +2,6 @@ package hexlet.code.controller.api;
 
 import hexlet.code.dto.users.UserCreateDTO;
 import hexlet.code.mapper.UserMapper;
-import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.util.ModelGenerator;
@@ -27,8 +26,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-
-import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
