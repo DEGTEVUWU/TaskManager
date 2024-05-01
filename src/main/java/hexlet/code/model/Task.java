@@ -19,7 +19,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
@@ -54,20 +53,4 @@ public class Task implements BaseEntity {
 
     @CreatedDate
     private LocalDate createdAt;
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        Task other = (Task) obj;
-        return Objects.equals(id, other.id);
-    }
 }

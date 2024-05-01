@@ -2,6 +2,7 @@ package hexlet.code.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.taskStatuses.TaskStatusCreateDTO;
+import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskStatusMapper;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskStatusRepository;
@@ -84,7 +85,9 @@ public class TaskStatusControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
 
-        TaskStatus taskStatus = taskStatusRepository.findById(testTaskStatus.getId()).orElse(new TaskStatus());
+        TaskStatus taskStatus = taskStatusRepository.findById(testTaskStatus.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus not found with name: "
+                        + testTaskStatus.getName()));
 
         assertThat(taskStatus).isNotNull();
         assertThat(taskStatus.getName()).isEqualTo(testTaskStatus.getName());
@@ -133,7 +136,9 @@ public class TaskStatusControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        TaskStatus taskStatus = taskStatusRepository.findById(testTaskStatus.getId()).orElse(new TaskStatus());
+        TaskStatus taskStatus = taskStatusRepository.findById(testTaskStatus.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus not found with name: "
+                        + testTaskStatus.getName()));
 
         assertThat(taskStatus.getName()).isEqualTo(testTaskStatus.getName());
         assertThat(taskStatus.getSlug()).isEqualTo(testTaskStatus.getSlug());
@@ -152,7 +157,9 @@ public class TaskStatusControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        TaskStatus taskStatus = taskStatusRepository.findById(testTaskStatus.getId()).orElse(new TaskStatus());
+        TaskStatus taskStatus = taskStatusRepository.findById(testTaskStatus.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("TaskStatus not found with name: "
+                        + testTaskStatus.getName()));
 
         assertThat(taskStatus.getName()).isEqualTo(testTaskStatus.getName());
         assertThat(taskStatus.getSlug()).isEqualTo(testTaskStatus.getSlug());

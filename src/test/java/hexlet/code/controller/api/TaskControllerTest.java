@@ -2,6 +2,7 @@ package hexlet.code.controller.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.dto.tasks.TaskCreateDTO;
+import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskMapper;
 import hexlet.code.model.Label;
 import hexlet.code.model.TaskStatus;
@@ -221,7 +222,8 @@ public class TaskControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
 
-        Task task = taskRepository.findById(testTask.getId()).orElse(new Task());
+        Task task = taskRepository.findById(testTask.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with name: " + testTask.getName()));
 
         assertThat(task).isNotNull();
         assertThat(task.getName()).isEqualTo(testTask.getName());
@@ -299,7 +301,8 @@ public class TaskControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        Task task = taskRepository.findById(testTask.getId()).orElse(new Task());
+        Task task = taskRepository.findById(testTask.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with name: " + testTask.getName()));
 
         assertThat(task.getName()).isEqualTo((dto.getName()));
         assertThat(task.getDescription()).isEqualTo((dto.getDescription()));
@@ -329,7 +332,8 @@ public class TaskControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        Task task = taskRepository.findById(testTask.getId()).orElse(new Task());
+        Task task = taskRepository.findById(testTask.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Task not found with name: " + testTask.getName()));
 
         assertThat(task.getName()).isEqualTo((testTask.getName()));
         assertThat(task.getDescription()).isEqualTo((testTask.getDescription()));

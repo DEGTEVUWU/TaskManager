@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Column;
 
 import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "labels")
 @NoArgsConstructor
+@EqualsAndHashCode
 public class Label implements BaseEntity {
 
     @Id

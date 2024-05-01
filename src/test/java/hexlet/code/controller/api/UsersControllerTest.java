@@ -1,6 +1,7 @@
 package hexlet.code.controller.api;
 
 import hexlet.code.dto.users.UserCreateDTO;
+import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
@@ -89,7 +90,8 @@ public class UsersControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
 
-        User user = userRepository.findByEmail(testUser.getEmail()).orElse(new User());
+        User user = userRepository.findByEmail(testUser.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + testUser.getEmail()));
 
         assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
         assertThat(user.getLastName()).isEqualTo(testUser.getLastName());
@@ -168,7 +170,8 @@ public class UsersControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        User user = userRepository.findById(testUser.getId()).orElse(new User());
+        User user = userRepository.findById(testUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + testUser.getEmail()));
 
         assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
         assertThat(user.getLastName()).isEqualTo(testUser.getLastName());
@@ -189,7 +192,8 @@ public class UsersControllerTest {
         mockMvc.perform(request)
                 .andExpect(status().isOk());
 
-        User user = userRepository.findById(testUser.getId()).orElse(new User());
+        User user = userRepository.findById(testUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + testUser.getEmail()));
 
         assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
         assertThat(user.getLastName()).isEqualTo(testUser.getLastName());
