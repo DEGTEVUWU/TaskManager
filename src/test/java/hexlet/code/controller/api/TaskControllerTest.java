@@ -368,7 +368,7 @@ public class TaskControllerTest {
                 .content(om.writeValueAsString(dto));
 
         mockMvc.perform(request)
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
