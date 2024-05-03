@@ -2,6 +2,7 @@ package hexlet.code.mapper;
 
 import hexlet.code.model.BaseEntity;
 import jakarta.persistence.EntityManager;
+import lombok.NoArgsConstructor;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.TargetType;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 )
 public abstract class ReferenceMapper {
     @Autowired
-    private EntityManager entityManager; //интерфейс для взаимодействия в БД в JTA
+    private  EntityManager entityManager; //интерфейс для взаимодействия в БД в JTA
 
     public <T extends BaseEntity> T toEntity(Long id, @TargetType Class<T> entityClass) {
         return id != null ? entityManager.find(entityClass, id) : null;

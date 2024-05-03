@@ -9,7 +9,7 @@ import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskStatusRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.NoArgsConstructor;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.MappingTarget;
@@ -17,6 +17,7 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,7 +30,6 @@ import java.util.stream.Collectors;
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public abstract class TaskMapper {
-
     @Autowired
     private LabelRepository labelRepository;
     @Autowired
