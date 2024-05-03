@@ -78,3 +78,4 @@ public abstract class TaskMapper {
                 .collect(Collectors.toSet());
     }
 }
+//комент для тестирования пушей и коммитов и тд
