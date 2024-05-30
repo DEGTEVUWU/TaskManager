@@ -27,9 +27,9 @@
 ### Подключи и используй локально ###
 ##### В терминале: #####
 ```
-git clone git@github.com:DEGTEVUWU/java-project-99.git
-cd java-project-99
-make run
+git clone git@github.com:DEGTEVUWU/TaskManager.git
+cd TaskManager
+make start
 ```
 ##### В браузере: #####
 ```

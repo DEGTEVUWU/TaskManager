@@ -14,9 +14,6 @@ plugins {
 
 }
 sentry {
-	// Generates a JVM (Java, Kotlin, etc.) source bundle and uploads your source code to Sentry.
-	// This enables source context, allowing you to see your source
-	// code as part of your stack traces in Sentry.
 	includeSourceContext = true
 
 	org = "ivan-3c"
@@ -61,6 +58,7 @@ dependencies {
 
 
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.postgresql:postgresql:42.6.0")
 	runtimeOnly("com.h2database:h2")
 	implementation("org.openapitools:jackson-databind-nullable:0.2.6") //нужна для null-маппера, чтоб работать с  null, как передаваемыми значнеиями
 

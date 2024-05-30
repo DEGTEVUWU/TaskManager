@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Component
 @AllArgsConstructor
@@ -26,14 +27,17 @@ public class DataInitializer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) {
-        var email = "hexlet@example.com";
-        var userData = new User();
-        userData.setEmail(email);
-        userData.setPasswordDigest(passwordEncoder.encode("qwerty"));
-        userRepository.save(userData);
+        Optional<User> firstUser = userRepository.findByEmail("hexlet@example.com");
+        if (firstUser.isEmpty()) {
+            var email = "hexlet@example.com";
+            var userData = new User();
+            userData.setEmail(email);
+            userData.setPasswordDigest(passwordEncoder.encode("qwerty"));
+            userRepository.save(userData);
 
-        taskStatusesInitializer();
-        labelsInitializer();
+            taskStatusesInitializer();
+            labelsInitializer();
+        }
     }
 
     public final void taskStatusesInitializer() { //метод для первичной инициализации 5 статусов для задач
@@ -64,6 +68,5 @@ public class DataInitializer implements ApplicationRunner {
 
         labelRepository.save(label1);
         labelRepository.save(label2);
-
     }
 }
